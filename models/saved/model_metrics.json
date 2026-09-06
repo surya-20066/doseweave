@@ -1,0 +1,293 @@
+{
+  "best_model": "Logistic Regression",
+  "best_f1_macro": 0.9644417895781155,
+  "candidates": {
+    "Logistic Regression": {
+      "cv_f1_macro_mean": 0.9640236550964133,
+      "cv_f1_macro_std": 0.0030715619807100015,
+      "test_accuracy": 0.966,
+      "test_precision_macro": 0.9641314227210164,
+      "test_recall_macro": 0.9648900708666789,
+      "test_f1_macro": 0.9644417895781155,
+      "confusion_matrix": [
+        [
+          1482,
+          39,
+          0
+        ],
+        [
+          38,
+          1081,
+          17
+        ],
+        [
+          0,
+          42,
+          1301
+        ]
+      ],
+      "classification_report": {
+        "LOW RISK": {
+          "precision": 0.975,
+          "recall": 0.9743589743589743,
+          "f1-score": 0.9746793817823084,
+          "support": 1521.0
+        },
+        "MODERATE RISK": {
+          "precision": 0.9302925989672978,
+          "recall": 0.9515845070422535,
+          "f1-score": 0.9408181026979983,
+          "support": 1136.0
+        },
+        "HIGH RISK": {
+          "precision": 0.9871016691957512,
+          "recall": 0.9687267311988086,
+          "f1-score": 0.9778278842540399,
+          "support": 1343.0
+        },
+        "accuracy": 0.966,
+        "macro avg": {
+          "precision": 0.9641314227210164,
+          "recall": 0.9648900708666789,
+          "f1-score": 0.9644417895781155,
+          "support": 4000.0
+        },
+        "weighted avg": {
+          "precision": 0.9663662335391859,
+          "recall": 0.966,
+          "f1-score": 0.9661198882272483,
+          "support": 4000.0
+        }
+      }
+    },
+    "Random Forest": {
+      "cv_f1_macro_mean": 0.9425092899582557,
+      "cv_f1_macro_std": 0.0034681265868782524,
+      "test_accuracy": 0.943,
+      "test_precision_macro": 0.9405824823806249,
+      "test_recall_macro": 0.9422905275509948,
+      "test_f1_macro": 0.9408277940679014,
+      "confusion_matrix": [
+        [
+          1449,
+          72,
+          0
+        ],
+        [
+          50,
+          1065,
+          21
+        ],
+        [
+          0,
+          85,
+          1258
+        ]
+      ],
+      "classification_report": {
+        "LOW RISK": {
+          "precision": 0.9666444296197465,
+          "recall": 0.9526627218934911,
+          "f1-score": 0.9596026490066225,
+          "support": 1521.0
+        },
+        "MODERATE RISK": {
+          "precision": 0.8715220949263502,
+          "recall": 0.9375,
+          "f1-score": 0.9033078880407125,
+          "support": 1136.0
+        },
+        "HIGH RISK": {
+          "precision": 0.983580922595778,
+          "recall": 0.9367088607594937,
+          "f1-score": 0.9595728451563692,
+          "support": 1343.0
+        },
+        "accuracy": 0.943,
+        "macro avg": {
+          "precision": 0.9405824823806249,
+          "recall": 0.9422905275509948,
+          "f1-score": 0.9408277940679014,
+          "support": 4000.0
+        },
+        "weighted avg": {
+          "precision": 0.9453161140835246,
+          "recall": 0.943,
+          "f1-score": 0.9436049302495815,
+          "support": 4000.0
+        }
+      }
+    },
+    "XGBoost": {
+      "cv_f1_macro_mean": 0.955186040496835,
+      "cv_f1_macro_std": 0.002677687301320563,
+      "test_accuracy": 0.95675,
+      "test_precision_macro": 0.9544529428581296,
+      "test_recall_macro": 0.9545759835630108,
+      "test_f1_macro": 0.9544822385246653,
+      "confusion_matrix": [
+        [
+          1482,
+          39,
+          0
+        ],
+        [
+          47,
+          1056,
+          33
+        ],
+        [
+          0,
+          54,
+          1289
+        ]
+      ],
+      "classification_report": {
+        "LOW RISK": {
+          "precision": 0.9692609548724657,
+          "recall": 0.9743589743589743,
+          "f1-score": 0.9718032786885246,
+          "support": 1521.0
+        },
+        "MODERATE RISK": {
+          "precision": 0.9190600522193212,
+          "recall": 0.9295774647887324,
+          "f1-score": 0.9242888402625821,
+          "support": 1136.0
+        },
+        "HIGH RISK": {
+          "precision": 0.9750378214826021,
+          "recall": 0.9597915115413254,
+          "f1-score": 0.9673545966228893,
+          "support": 1343.0
+        },
+        "accuracy": 0.95675,
+        "macro avg": {
+          "precision": 0.9544529428581296,
+          "recall": 0.9545759835630108,
+          "f1-score": 0.9544822385246653,
+          "support": 4000.0
+        },
+        "weighted avg": {
+          "precision": 0.956943481483326,
+          "recall": 0.95675,
+          "f1-score": 0.9568155331720198,
+          "support": 4000.0
+        }
+      }
+    }
+  },
+  "feature_names": [
+    "num__age",
+    "num__weight",
+    "num__number_of_health_conditions",
+    "num__number_of_known_allergies",
+    "num__number_of_medicines",
+    "num__medicine_class_count",
+    "num__known_drug_drug_interaction_count",
+    "num__interaction_severity_score",
+    "num__drug_food_interaction_count",
+    "num__symptom_count",
+    "num__severe_symptom_count",
+    "num__age_risk_score",
+    "num__health_condition_risk_score",
+    "num__dosage_risk_score",
+    "num__interaction_risk_score",
+    "num__food_interaction_risk_score",
+    "num__symptom_risk_score",
+    "cat__gender_Female",
+    "cat__gender_Male",
+    "cat__age_group_Geriatric (65+)",
+    "cat__age_group_Middle-aged (46-65)",
+    "cat__age_group_Young Adult (18-45)",
+    "bin__kidney_disease",
+    "bin__liver_disease",
+    "bin__heart_disease",
+    "bin__diabetes",
+    "bin__duplicate_active_ingredient_flag",
+    "bin__dosage_deviation_flag",
+    "bin__unknown_dosage_flag",
+    "bin__frequency_risk_flag",
+    "bin__multiple_medicines_taken_together",
+    "bin__drug_alcohol_interaction_flag",
+    "bin__supplement_interaction_flag",
+    "bin__food_consumed_with_medicine",
+    "bin__grapefruit_flag",
+    "bin__alcohol_flag",
+    "bin__milk_flag",
+    "bin__caffeine_flag",
+    "bin__herbal_supplement_flag",
+    "bin__vitamin_k_food_flag",
+    "bin__nausea",
+    "bin__vomiting",
+    "bin__dizziness",
+    "bin__drowsiness",
+    "bin__confusion",
+    "bin__abdominal_pain",
+    "bin__difficulty_breathing",
+    "bin__chest_pain",
+    "bin__loss_of_consciousness",
+    "bin__seizure"
+  ],
+  "top_feature_importances": {
+    "num__severe_symptom_count": 4.275053918761693,
+    "num__symptom_risk_score": 4.173565160666653,
+    "num__dosage_risk_score": 3.476046228154523,
+    "num__interaction_risk_score": 2.819873952670882,
+    "num__health_condition_risk_score": 2.2929153365226598,
+    "num__food_interaction_risk_score": 2.033852202093904,
+    "num__interaction_severity_score": 1.8072236157375883,
+    "num__age_risk_score": 1.5781980711890788,
+    "bin__dosage_deviation_flag": 1.1253108743625304,
+    "num__known_drug_drug_interaction_count": 1.0206376011258402,
+    "cat__age_group_Geriatric (65+)": 0.9018237550590958,
+    "bin__chest_pain": 0.8259297831450998,
+    "bin__duplicate_active_ingredient_flag": 0.8157862941630883,
+    "bin__difficulty_breathing": 0.7994624001718605,
+    "bin__frequency_risk_flag": 0.7840179126007719,
+    "bin__multiple_medicines_taken_together": 0.7701913845891939,
+    "num__symptom_count": 0.7604206576367648,
+    "bin__liver_disease": 0.6733885217114959,
+    "bin__drug_alcohol_interaction_flag": 0.6727739135102597,
+    "cat__age_group_Middle-aged (46-65)": 0.6505301084624002,
+    "bin__kidney_disease": 0.6386347267616195,
+    "bin__unknown_dosage_flag": 0.5014317058937771,
+    "cat__gender_Male": 0.4759470504226408,
+    "cat__gender_Female": 0.47334084781146896,
+    "bin__heart_disease": 0.4286889909356652,
+    "num__age": 0.41026482747210685,
+    "cat__age_group_Young Adult (18-45)": 0.38601513805600546,
+    "bin__confusion": 0.37138544734918194,
+    "bin__loss_of_consciousness": 0.3641073554025332,
+    "bin__vomiting": 0.31054175302613674,
+    "bin__dizziness": 0.3059985088086488,
+    "bin__abdominal_pain": 0.2970308442277888,
+    "bin__nausea": 0.29265548781425677,
+    "bin__drowsiness": 0.24630083062776906,
+    "bin__seizure": 0.2399865805062488,
+    "num__drug_food_interaction_count": 0.23791193091381732,
+    "bin__diabetes": 0.22111091466542407,
+    "bin__vitamin_k_food_flag": 0.12237684747133148,
+    "num__number_of_health_conditions": 0.11055455037474478,
+    "bin__food_consumed_with_medicine": 0.09603090448974227,
+    "bin__grapefruit_flag": 0.09394671232491358,
+    "bin__caffeine_flag": 0.07881742441414744,
+    "bin__milk_flag": 0.07778281240451725,
+    "bin__supplement_interaction_flag": 0.0763492583514137,
+    "num__number_of_medicines": 0.06828450268137064,
+    "bin__alcohol_flag": 0.052177089367779726,
+    "bin__herbal_supplement_flag": 0.040580699283302366,
+    "num__number_of_known_allergies": 0.03772143789850032,
+    "num__weight": 0.02605662315896423,
+    "num__medicine_class_count": 0.025424564532448058
+  },
+  "target_classes": {
+    "0": "LOW RISK",
+    "1": "MODERATE RISK",
+    "2": "HIGH RISK"
+  },
+  "dataset_metadata": {
+    "samples": 20000,
+    "source": "FDA FAERS & SIDER hybrid derived clinical rules with synthetic controlled scenarios"
+  }
+}

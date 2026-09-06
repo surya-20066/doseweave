@@ -1,0 +1,1077 @@
+/* MediSafe AI - Ultra-Modern Healthcare SaaS Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --primary: #2563EB;
+  --primary-glow: rgba(37, 99, 235, 0.2);
+  --primary-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  --primary-dark: #1E40AF;
+  --accent-cyan: #06B6D4;
+  --accent-indigo: #4F46E5;
+  --bg-app: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --border-subtle: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #EF4444;
+  --danger-bg: #FEF2F2;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.06), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 12px 24px -4px rgba(37, 99, 235, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Base Body Styling & Animated Futuristic Healthcare AI Background */
+html, body, [data-testid="stAppViewContainer"], .stApp {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
+  background-color: #F8FAFC !important;
+  color: var(--text-main) !important;
+  letter-spacing: -0.01em;
+}
+
+[data-testid="stAppViewContainer"], .stApp {
+  background-color: #F8FAFC !important;
+  background-image: 
+    radial-gradient(at 5% 5%, rgba(37, 99, 235, 0.08) 0px, transparent 45%),
+    radial-gradient(at 95% 10%, rgba(124, 58, 237, 0.08) 0px, transparent 45%),
+    radial-gradient(at 50% 45%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+    radial-gradient(at 10% 90%, rgba(79, 70, 229, 0.06) 0px, transparent 45%),
+    radial-gradient(at 90% 90%, rgba(37, 99, 235, 0.07) 0px, transparent 50%) !important;
+  background-size: 130% 130% !important;
+  animation: ambientMeshGlow 16s ease-in-out infinite alternate !important;
+}
+
+@keyframes ambientMeshGlow {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+/* Hide default streamlit header bar decoration */
+header[data-testid="stHeader"] {
+  background: transparent !important;
+}
+
+/* Main Container Max-Width and Clean Padding */
+.main .block-container {
+  padding-top: 1.5rem !important;
+  padding-bottom: 4rem !important;
+  max-width: 1240px !important;
+}
+
+/* Modern Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 800 !important;
+  color: var(--text-main) !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* Hide Left Sidebar completely as main navigation is moved to top bar */
+[data-testid="stSidebar"], section[data-testid="stSidebar"], [data-testid="collapsedControl"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Adjust main container to full width with comfortable spacing */
+.main .block-container {
+  padding-top: 1rem !important;
+  padding-bottom: 4rem !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* Button System: Elevated Pill Buttons with 3D Lift and Subtle Hover Glow */
+.stButton > button,
+[data-testid="stFormSubmitButton"] > button {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  padding: 0.6rem 1.25rem !important;
+  letter-spacing: -0.01em !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+button[kind="primary"],
+.stButton > button[kind="primary"],
+[data-testid="stFormSubmitButton"] > button,
+button[data-testid="stBaseButton-primary"],
+button[kind="primaryFormSubmit"] {
+  background: linear-gradient(135deg, #2563EB 0%, #4F46E5 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28) !important;
+}
+
+button[kind="primary"]:hover,
+.stButton > button[kind="primary"]:hover,
+[data-testid="stFormSubmitButton"] > button:hover,
+button[data-testid="stBaseButton-primary"]:hover,
+button[kind="primaryFormSubmit"]:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #4338CA 100%) !important;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45), 0 0 16px rgba(37, 99, 235, 0.35) !important;
+  transform: translateY(-2.5px) perspective(500px) translateZ(6px) !important;
+}
+
+button[kind="secondary"], .stButton > button[kind="secondary"] {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  color: #334155 !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Keep the active Login / Sign Up switcher label readable */
+div[class*="st-key-auth_tab_login"] button[kind="primary"],
+div[class*="st-key-auth_tab_signup"] button[kind="primary"] {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+div[class*="st-key-auth_tab_login"] button[kind="primary"] *,
+div[class*="st-key-auth_tab_signup"] button[kind="primary"] * {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+button[kind="secondary"]:hover {
+  background-color: #FFFFFF !important;
+  border-color: #818CF8 !important;
+  color: #4F46E5 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.18) !important;
+}
+
+/* Bordered Container Glassmorphism Cards */
+[data-testid="stVerticalBlockBorderWrapper"] {
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1px solid rgba(226, 232, 240, 0.95) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 16px 36px -8px rgba(37, 99, 235, 0.10), 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+  padding: 1.75rem 2rem !important;
+  transition: all 0.3s ease !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+  border-color: rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 20px 42px -6px rgba(37, 99, 235, 0.16), 0 8px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] > div {
+  border: none !important;
+  padding: 0 !important;
+}
+
+/* Clean Forms without nested duplicate borders */
+div[data-testid="stForm"] {
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Modern Full-Width Symmetrical Segmented Pill Tabs */
+div[data-testid="stTabs"] {
+  margin-top: 0.5rem !important;
+  width: 100% !important;
+}
+
+div[data-testid="stTabs"] [role="tablist"],
+div[data-baseweb="tab-list"] {
+  display: flex !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #F1F5F9 !important;
+  border-radius: 14px !important;
+  padding: 5px !important;
+  gap: 8px !important;
+  border: 1px solid #E2E8F0 !important;
+  align-items: center !important;
+  margin-bottom: 1.25rem !important;
+}
+
+/* Force every tab to fill width symmetrically */
+div[data-testid="stTabs"] button[role="tab"],
+div[data-testid="stTabs"] button[data-baseweb="tab"],
+button[data-baseweb="tab"] {
+  flex: 1 1 0% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  border: none !important;
+  border-bottom: 0px none transparent !important;
+  font-weight: 800 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  outline: none !important;
+  padding: 0.5rem 1rem !important;
+}
+
+/* Active tab: elevated crisp white pill with clean shadow */
+div[data-testid="stTabs"] button[role="tab"][aria-selected="true"],
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"],
+button[data-baseweb="tab"][aria-selected="true"] {
+  background: #FFFFFF !important;
+  color: #2563EB !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(226, 232, 240, 0.9) !important;
+  border-bottom: 0px none transparent !important;
+}
+
+/* Inactive tab: clean slate */
+div[data-testid="stTabs"] button[role="tab"][aria-selected="false"],
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="false"],
+button[data-baseweb="tab"][aria-selected="false"] {
+  background: transparent !important;
+  color: #64748B !important;
+  box-shadow: none !important;
+  border: 1px solid transparent !important;
+  border-bottom: 0px none transparent !important;
+}
+
+div[data-testid="stTabs"] button[role="tab"][aria-selected="false"]:hover,
+div[data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="false"]:hover,
+button[data-baseweb="tab"][aria-selected="false"]:hover {
+  color: #0F172A !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+}
+
+/* Inner tab text elements */
+div[data-testid="stTabs"] button[role="tab"] p,
+div[data-testid="stTabs"] button[data-baseweb="tab"] p,
+div[data-testid="stTabs"] button[role="tab"] div,
+div[data-testid="stTabs"] button[data-baseweb="tab"] div {
+  color: inherit !important;
+  font-weight: 800 !important;
+  font-size: 0.88rem !important;
+  letter-spacing: 0.05em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Pseudo-element suppression */
+div[data-testid="stTabs"] button[role="tab"]::after,
+div[data-testid="stTabs"] button[role="tab"]::before,
+div[data-testid="stTabs"] button[data-baseweb="tab"]::after,
+div[data-testid="stTabs"] button[data-baseweb="tab"]::before {
+  display: none !important;
+  content: none !important;
+  opacity: 0 !important;
+}
+
+/* Suppress all sliding highlight bars, bottom borders, and default underlines */
+div[data-testid="stTabs"] [data-baseweb="tab-highlight"],
+div[data-testid="stTabs"] div[data-baseweb="tab-highlight"],
+div[data-baseweb="tab-highlight"],
+div[data-testid="stTabs"] [data-baseweb="tab-border"],
+div[data-testid="stTabs"] div[data-baseweb="tab-border"],
+div[data-testid="stTabs"] hr,
+div[data-testid="stTabs"] [role="tablist"] > div:not([role="tab"]) {
+  display: none !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Clean Input Labels and Focus Rings */
+div[data-testid="stTextInput"] label,
+div[data-testid="stPasswordInput"] label {
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+  color: #1E293B !important;
+  letter-spacing: 0.01em !important;
+  margin-bottom: 0.35rem !important;
+}
+
+div[data-testid="stTextInput"] input,
+div[data-testid="stPasswordInput"] input {
+  border-radius: 10px !important;
+  border: 1.5px solid #CBD5E1 !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  font-size: 0.94rem !important;
+  padding: 0.65rem 0.95rem !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+div[data-testid="stTextInput"] input:focus,
+div[data-testid="stPasswordInput"] input:focus {
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+  outline: none !important;
+}
+
+/* Modern Glassmorphism Card System with Subtle 3D Depth */
+.clean-card {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(14px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(180%) !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 16px !important;
+  padding: 1.65rem !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.32s ease, border-color 0.32s ease !important;
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle 3D Lift, Glowing Border, and Soft Shadow on Hover */
+.clean-card:hover {
+  transform: translateY(-6px) perspective(1000px) rotateX(1.2deg) !important;
+  border-color: rgba(99, 102, 241, 0.45) !important;
+  box-shadow: 0 18px 36px -6px rgba(37, 99, 235, 0.14), 0 8px 16px -4px rgba(99, 102, 241, 0.1), inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+/* Subtle Shimmer Sweep on Card Hover */
+.clean-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  transform: rotate(30deg) translateX(-100%);
+  transition: transform 0.75s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.clean-card:hover::after {
+  transform: rotate(30deg) translateX(100%);
+  opacity: 1;
+}
+
+/* Live Pulsing Status Dot */
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #10B981;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Modern Pill Tag */
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  color: #2563EB;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+}
+
+/* Professional Top Navigation Bar */
+.top-navbar-container {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 0.85rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.top-navbar-logo {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.top-navbar-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+}
+
+/* Process Step Tabs Container */
+.process-tabs-wrapper {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.process-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+/* Step tab state classes */
+.step-state-active {
+  color: #2563EB !important;
+  font-weight: 800 !important;
+}
+
+.step-state-completed {
+  color: #10B981 !important;
+  font-weight: 700 !important;
+}
+
+.step-state-locked {
+  color: #94A3B8 !important;
+  font-weight: 600 !important;
+}
+
+/* Metric Cards with Accent Top Border */
+.metric-card {
+  background: #FFFFFF !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 16px !important;
+  padding: 1.35rem 1.4rem !important;
+  box-shadow: var(--shadow-md) !important;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease !important;
+}
+
+.metric-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.metric-card-label {
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted) !important;
+  margin-bottom: 0.35rem;
+}
+
+.metric-card-value {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--text-main) !important;
+  line-height: 1.15;
+}
+
+.metric-card-subtext {
+  font-size: 0.78rem;
+  color: var(--text-muted) !important;
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+/* Clinical Status Badges */
+.badge-low {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+  border: 1px solid #A7F3D0 !important;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-moderate {
+  background-color: #FFFBEB !important;
+  color: #B45309 !important;
+  border: 1px solid #FDE68A !important;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.badge-high {
+  background-color: #FEF2F2 !important;
+  color: #B91C1C !important;
+  border: 1px solid #FECACA !important;
+  padding: 0.3rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Modern Form & Input Styling with Focus Rings */
+input[type="text"], input[type="password"], input[type="number"], textarea, select {
+  border-radius: 10px !important;
+  border: 1px solid #CBD5E1 !important;
+  color: var(--text-main) !important;
+  background-color: #FFFFFF !important;
+  font-size: 0.92rem !important;
+  padding: 0.6rem 0.85rem !important;
+  transition: all 0.2s ease !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #2563EB !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.16) !important;
+  outline: none !important;
+}
+
+div[data-testid="stForm"] {
+  background-color: transparent !important;
+  border: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Modern Tabs with Clean Active Highlight */
+.stTabs [data-baseweb="tab-list"] {
+  gap: 8px;
+  background-color: #F1F5F9;
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+}
+
+.stTabs [data-baseweb="tab"] {
+  border-radius: 8px !important;
+  padding: 0.5rem 1.15rem !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  color: var(--text-muted) !important;
+  background: transparent !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.stTabs [aria-selected="true"] {
+  background-color: #FFFFFF !important;
+  color: var(--primary) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Emergency Red-Flag Alert Banner */
+.emergency-banner {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FFF1F2 100%);
+  border: 1px solid #FECACA;
+  border-left: 6px solid #DC2626;
+  border-radius: 14px;
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
+}
+
+.emergency-banner-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #991B1B;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.01em;
+}
+
+.emergency-banner-text {
+  font-size: 0.9rem;
+  color: #7F1D1D;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+/* Streamlit Expander Modernization */
+[data-testid="stExpander"] {
+  background: #FFFFFF !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-sm) !important;
+  overflow: hidden !important;
+  margin-bottom: 1rem !important;
+}
+
+[data-testid="stExpander"] summary {
+  font-weight: 700 !important;
+  color: var(--text-main) !important;
+  font-size: 0.95rem !important;
+  padding: 0.85rem 1.25rem !important;
+}
+
+/* Interactive Dataframe Table Rounding */
+[data-testid="stDataFrame"] {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border-subtle) !important;
+}
+
+/* =========================================================================
+   PREMIUM LANDING PAGE TOP NAVBAR STYLING
+   ========================================================================= */
+
+div[class*="st-key-topnav_login_btn"] button {
+  background: #FFFFFF !important;
+  color: #1E293B !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.03em !important;
+  padding: 0.48rem 1.25rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+div[class*="st-key-topnav_login_btn"] button:hover {
+  background: #F8FAFC !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12) !important;
+}
+
+div[class*="st-key-topnav_signup_btn"] button {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #1D4ED8 !important;
+  border-radius: 9999px !important;
+  font-weight: 800 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.03em !important;
+  padding: 0.48rem 1.35rem !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+div[class*="st-key-topnav_signup_btn"] button:hover {
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Keep active navigation labels readable against primary buttons */
+div[class*="st-key-topnav_login_btn"] button[kind="primary"],
+div[class*="st-key-topnav_signup_btn"] button[kind="primary"] {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+div[class*="st-key-topnav_login_btn"] button[kind="primary"] p,
+div[class*="st-key-topnav_login_btn"] button[kind="primary"] span,
+div[class*="st-key-topnav_signup_btn"] button[kind="primary"] p,
+div[class*="st-key-topnav_signup_btn"] button[kind="primary"] span {
+  color: #FFFFFF !important;
+  opacity: 1 !important;
+}
+
+div[class*="st-key-topnav_home_btn"] button {
+  background: #FFFFFF !important;
+  color: #475569 !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 9999px !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  padding: 0.48rem 1.1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+div[class*="st-key-topnav_home_btn"] button:hover {
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+/* =========================================================================
+   CLEAN HEALTHCARE PROFILE PAGE STYLING
+   ========================================================================= */
+
+.profile-card-box {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  margin-bottom: 1.25rem;
+}
+
+.profile-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  margin-bottom: 0.75rem;
+}
+
+.profile-avatar-circle {
+  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
+  color: #FFFFFF;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.22);
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.profile-row-label {
+  font-size: 0.82rem;
+  color: #64748B;
+  font-weight: 500;
+}
+
+.profile-row-value {
+  font-size: 0.88rem;
+  color: #0F172A;
+  font-weight: 600;
+  text-align: right;
+}
+
+.patient-info-box {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.patient-info-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748B;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.patient-info-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.clinical-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.80rem;
+  font-weight: 600;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.tag-condition {
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  color: #1E40AF;
+}
+
+.tag-allergy {
+  background: #FEF2F2;
+  border: 1px solid #FEE2E2;
+  color: #991B1B;
+}
+
+.profile-status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #F1F5F9;
+  font-size: 0.85rem;
+}
+
+.profile-status-item:last-child {
+  border-bottom: none;
+}
+
+/* ========================================================================= */
+/* FUTURISTIC HEALTHCARE AI - ANIMATION SUITE & 3D VISUAL SYSTEM              */
+/* ========================================================================= */
+
+/* 1. Animate the MEDISAFE AI Title with Upward Motion & Soft Glow */
+.hero-title {
+  font-size: 3.2rem !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.035em !important;
+  background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 45%, #2563EB 75%, #7C3AED 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  margin-bottom: 0.75rem !important;
+  animation: heroTitleEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both, heroGlowPulse 4.5s ease-in-out infinite alternate !important;
+}
+
+@keyframes heroTitleEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes heroGlowPulse {
+  0% {
+    filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.15));
+  }
+  100% {
+    filter: drop-shadow(0 6px 24px rgba(124, 58, 237, 0.30));
+  }
+}
+
+/* 2. Hero Tag, Subtitle & Description Entrance Animations */
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239, 246, 255, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(219, 234, 254, 0.9) !important;
+  color: #2563EB;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.95rem;
+  border-radius: 9999px;
+  animation: heroFadeSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+.hero-subtitle {
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #2563EB !important;
+  margin-bottom: 1.25rem !important;
+  animation: heroFadeSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both !important;
+}
+
+.hero-desc {
+  font-size: 1.05rem !important;
+  line-height: 1.65 !important;
+  color: #475569 !important;
+  margin-bottom: 2rem !important;
+  max-width: 760px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  animation: heroFadeSlide 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both !important;
+}
+
+@keyframes heroFadeSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. Section Reveal Animation */
+.section-reveal {
+  animation: sectionEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes sectionEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4. 4-Step Process Staggered Entrance Animations */
+.step-card {
+  animation-duration: 0.75s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  animation-fill-mode: both;
+}
+
+.step-card-1 {
+  animation-name: stepEntrance;
+  animation-delay: 0.12s;
+}
+
+.step-card-2 {
+  animation-name: stepEntrance;
+  animation-delay: 0.26s;
+}
+
+.step-card-3 {
+  animation-name: stepEntrance;
+  animation-delay: 0.40s;
+}
+
+.step-card-4 {
+  animation-name: stepEntrance;
+  animation-delay: 0.54s;
+}
+
+@keyframes stepEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 5. Subtle Levitation for Healthcare & Medical Icons */
+.floating-icon {
+  display: inline-block;
+  animation: medicalIconFloat 3.8s ease-in-out infinite;
+  transform-origin: center;
+  filter: drop-shadow(0 4px 10px rgba(37, 99, 235, 0.20));
+}
+
+.floating-icon-delayed {
+  display: inline-block;
+  animation: medicalIconFloat 3.8s ease-in-out infinite;
+  animation-delay: 1.2s;
+  transform-origin: center;
+  filter: drop-shadow(0 4px 10px rgba(124, 58, 237, 0.20));
+}
+
+@keyframes medicalIconFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2.5deg);
+  }
+}
+
+/* 6. Logo & Brand Pulse Glow */
+.brand-logo-icon {
+  animation: logoGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  0% {
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  }
+  100% {
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+  }
+}
+
+/* 7. Performance & Accessibility: Respect Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  [data-testid="stAppViewContainer"],
+  .clean-card,
+  .hero-title,
+  .floating-icon,
+  .floating-icon-delayed,
+  .step-card {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 8. Fully Responsive Optimizations for Tablet and Mobile */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.35rem !important;
+  }
+  .hero-subtitle {
+    font-size: 1.15rem !important;
+  }
+  .hero-desc {
+    font-size: 0.95rem !important;
+  }
+  .clean-card {
+    padding: 1.2rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+
+

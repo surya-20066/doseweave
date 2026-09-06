@@ -1,0 +1,333 @@
+{
+  "_metadata": {
+    "title": "MediSafe AI Verified Medication Safety & Interaction Knowledge Base",
+    "version": "2.0.0",
+    "sources": [
+      "U.S. FDA FAERS (Food and Drug Administration Adverse Event Reporting System)",
+      "DailyMed Structured Product Labeling (National Library of Medicine)",
+      "RxNorm Standard Clinical Drug Nomenclature (NLM)",
+      "SIDER 4.1 Side Effect Resource (EMBL)",
+      "Lexicomp / DrugBank Clinical Pharmacology Reference Standards"
+    ],
+    "verification_policy": "Only pharmacologically validated interactions are included. Unknown or speculative interactions are flagged for pharmacist review."
+  },
+  "drug_drug_interactions": [
+    {
+      "pair": ["aspirin", "warfarin"],
+      "severity": "Major",
+      "effect": "Markedly elevated hemorrhage risk; dual antiplatelet and anticoagulant synergistic bleeding.",
+      "evidence_level": "FDA Black Box Warning"
+    },
+    {
+      "pair": ["ibuprofen", "warfarin"],
+      "severity": "Major",
+      "effect": "Severe gastrointestinal bleeding and elevated prothrombin time displacement.",
+      "evidence_level": "FDA Strong Warning"
+    },
+    {
+      "pair": ["clopidogrel", "aspirin"],
+      "severity": "Moderate",
+      "effect": "Additive antiplatelet effect; requires clinical supervision for bleeding risks.",
+      "evidence_level": "Established Clinical Monitoring"
+    },
+    {
+      "pair": ["lisinopril", "spironolactone"],
+      "severity": "Major",
+      "effect": "Severe hyperkalemia risk causing potential cardiac dysrhythmias.",
+      "evidence_level": "FDA Established Precaution"
+    },
+    {
+      "pair": ["lisinopril", "potassium"],
+      "severity": "Major",
+      "effect": "Severe hyperkalemia; ACE inhibitors reduce aldosterone secretion, retaining potassium.",
+      "evidence_level": "FDA Established Precaution"
+    },
+    {
+      "pair": ["metformin", "contrast"],
+      "severity": "Major",
+      "effect": "Acute renal impairment leading to potential lactic acidosis.",
+      "evidence_level": "FDA Black Box Precaution"
+    },
+    {
+      "pair": ["atorvastatin", "clarithromycin"],
+      "severity": "Major",
+      "effect": "CYP3A4 inhibition increases statin exposure, causing high risk of rhabdomyolysis.",
+      "evidence_level": "FDA Strong Warning"
+    },
+    {
+      "pair": ["simvastatin", "amiodarone"],
+      "severity": "Major",
+      "effect": "Severe myopathy and rhabdomyolysis due to CYP3A4 inhibition.",
+      "evidence_level": "FDA Warning"
+    },
+    {
+      "pair": ["fluoxetine", "tramadol"],
+      "severity": "Major",
+      "effect": "Synergistic serotonergic activity elevating risk of life-threatening Serotonin Syndrome.",
+      "evidence_level": "FDA Warning"
+    },
+    {
+      "pair": ["sertraline", "tramadol"],
+      "severity": "Major",
+      "effect": "Potential Serotonin Syndrome and lowered seizure threshold.",
+      "evidence_level": "FDA Warning"
+    },
+    {
+      "pair": ["alprazolam", "tramadol"],
+      "severity": "Major",
+      "effect": "Profound sedation, respiratory depression, coma, and potential fatality.",
+      "evidence_level": "FDA Black Box Warning"
+    },
+    {
+      "pair": ["diazepam", "codeine"],
+      "severity": "Major",
+      "effect": "Dual CNS and respiratory depression; concurrent opioid-benzodiazepine hazard.",
+      "evidence_level": "FDA Black Box Warning"
+    },
+    {
+      "pair": ["methotrexate", "ibuprofen"],
+      "severity": "Major",
+      "effect": "Decreased methotrexate renal clearance leading to severe bone marrow suppression.",
+      "evidence_level": "FDA Established Contraindication"
+    },
+    {
+      "pair": ["methotrexate", "aspirin"],
+      "severity": "Major",
+      "effect": "Displacement from protein binding and decreased tubular secretion; acute toxicity.",
+      "evidence_level": "FDA Established Contraindication"
+    },
+    {
+      "pair": ["sildenafil", "nitroglycerin"],
+      "severity": "Major",
+      "effect": "Profound synergistic vasodilation causing severe, potentially fatal hypotension.",
+      "evidence_level": "FDA Absolute Contraindication"
+    },
+    {
+      "pair": ["digoxin", "amiodarone"],
+      "severity": "Major",
+      "effect": "Doubles serum digoxin concentrations; fatal digitalis toxicity risk.",
+      "evidence_level": "FDA Warning"
+    },
+    {
+      "pair": ["metoprolol", "verapamil"],
+      "severity": "Major",
+      "effect": "Severe additive negative inotropic and chronotropic effects; high-grade AV block.",
+      "evidence_level": "FDA Precaution"
+    },
+    {
+      "pair": ["ciprofloxacin", "theophylline"],
+      "severity": "Major",
+      "effect": "CYP1A2 inhibition elevates theophylline levels causing neurotoxicity and seizures.",
+      "evidence_level": "FDA Established Warning"
+    },
+    {
+      "pair": ["levothyroxine", "calcium"],
+      "severity": "Moderate",
+      "effect": "Chelation in GI tract impairs levothyroxine absorption; separate doses by 4 hours.",
+      "evidence_level": "Clinical Practice Guideline"
+    },
+    {
+      "pair": ["levothyroxine", "iron"],
+      "severity": "Moderate",
+      "effect": "Insoluble chelate complex formed; reduces thyroid replacement efficacy.",
+      "evidence_level": "Clinical Practice Guideline"
+    },
+    {
+      "pair": ["ciprofloxacin", "prednisone"],
+      "severity": "Major",
+      "effect": "Marked increase in Achilles tendonitis and risk of tendon rupture.",
+      "evidence_level": "FDA Black Box Warning"
+    }
+  ],
+  "drug_food_interactions": [
+    {
+      "drug": "atorvastatin",
+      "food_category": "Grapefruit & Citrus Juice",
+      "severity": "Major",
+      "mechanism": "Intestinal CYP3A4 enzyme inhibition increases systemic statin exposure.",
+      "recommendation": "Avoid large amounts of grapefruit and grapefruit juice to prevent muscle breakdown."
+    },
+    {
+      "drug": "simvastatin",
+      "food_category": "Grapefruit & Citrus Juice",
+      "severity": "Major",
+      "mechanism": "Potent CYP3A4 inhibition elevates bioavailability up to 7-fold.",
+      "recommendation": "Complete avoidance of grapefruit products is clinically advised."
+    },
+    {
+      "drug": "amlodipine",
+      "food_category": "Grapefruit & Citrus Juice",
+      "severity": "Moderate",
+      "mechanism": "Increased serum calcium channel blocker levels resulting in peripheral edema and hypotension.",
+      "recommendation": "Limit grapefruit intake while on calcium channel blockers."
+    },
+    {
+      "drug": "metformin",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Alcohol potentiates metformin's effect on lactate metabolism.",
+      "recommendation": "Avoid acute or chronic excessive alcohol consumption to prevent lactic acidosis."
+    },
+    {
+      "drug": "paracetamol",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Ethanol induces CYP2E1, accelerating formation of hepatotoxic metabolite NAPQI.",
+      "recommendation": "Strictly avoid alcohol when taking acetaminophen/paracetamol."
+    },
+    {
+      "drug": "acetaminophen",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Ethanol induces CYP2E1, elevating NAPQI hepatotoxic load.",
+      "recommendation": "Do not consume alcohol with acetaminophen."
+    },
+    {
+      "drug": "alprazolam",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Synergistic GABA-A receptor stimulation causes severe CNS depression.",
+      "recommendation": "Strictly avoid alcohol; high risk of severe sedation and respiratory depression."
+    },
+    {
+      "drug": "diazepam",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Synergistic GABA-A receptor stimulation causes severe CNS depression.",
+      "recommendation": "Strictly avoid alcohol."
+    },
+    {
+      "drug": "tramadol",
+      "food_category": "Alcohol",
+      "severity": "Major",
+      "mechanism": "Additive central nervous system and respiratory suppression.",
+      "recommendation": "Do not consume alcohol with tramadol."
+    },
+    {
+      "drug": "warfarin",
+      "food_category": "High Vitamin K Foods (Spinach, Kale, Broccoli)",
+      "severity": "Major",
+      "mechanism": "Vitamin K directly reverses anticoagulant antagonism of clotting factors II, VII, IX, X.",
+      "recommendation": "Maintain consistent daily dietary vitamin K intake; sudden increases reduce INR and promote clotting."
+    },
+    {
+      "drug": "ciprofloxacin",
+      "food_category": "Milk & Dairy",
+      "severity": "Major",
+      "mechanism": "Divalent calcium ions form unabsorbable chelates with fluoroquinolones.",
+      "recommendation": "Take ciprofloxacin 2 hours before or 6 hours after dairy products."
+    },
+    {
+      "drug": "doxycycline",
+      "food_category": "Milk & Dairy",
+      "severity": "Moderate",
+      "mechanism": "Calcium binding in digestive tract reduces doxycycline bioavailability.",
+      "recommendation": "Separate doxycycline and dairy products by at least 2 hours."
+    },
+    {
+      "drug": "theophylline",
+      "food_category": "Coffee",
+      "severity": "Moderate",
+      "mechanism": "Competitive xanthine metabolism; caffeine elevates theophylline serum levels.",
+      "recommendation": "Limit caffeinated beverages to prevent tachycardia, jitteriness, and tremors."
+    },
+    {
+      "drug": "pseudoephedrine",
+      "food_category": "Coffee",
+      "severity": "Moderate",
+      "mechanism": "Additive sympathomimetic stimulation increases heart rate and blood pressure.",
+      "recommendation": "Reduce caffeine consumption while taking oral decongestants."
+    },
+    {
+      "drug": "sertraline",
+      "food_category": "Herbal Supplements (St. John's Wort, Ginkgo)",
+      "severity": "Major",
+      "mechanism": "St. John's Wort contains hyperforin and hypericin, adding serotonergic toxicity.",
+      "recommendation": "Avoid St. John's Wort due to high risk of Serotonin Syndrome."
+    },
+    {
+      "drug": "fluoxetine",
+      "food_category": "Herbal Supplements (St. John's Wort, Ginkgo)",
+      "severity": "Major",
+      "mechanism": "Severe additive serotonin elevation.",
+      "recommendation": "Avoid herbal serotonergic supplements."
+    },
+    {
+      "drug": "oral contraceptive",
+      "food_category": "Herbal Supplements (St. John's Wort, Ginkgo)",
+      "severity": "Major",
+      "mechanism": "St. John's Wort induces CYP3A4, clearing ethinyl estradiol and causing breakthrough ovulation.",
+      "recommendation": "Avoid St. John's Wort; barrier contraception required."
+    }
+  ],
+  "disease_contraindications": [
+    {
+      "drug": "ibuprofen",
+      "condition": "Chronic Kidney Disease",
+      "severity": "Major",
+      "warning": "NSAIDs inhibit renal prostaglandins, reducing glomerular filtration and worsening renal failure."
+    },
+    {
+      "drug": "naproxen",
+      "condition": "Chronic Kidney Disease",
+      "severity": "Major",
+      "warning": "NSAID-induced acute kidney injury and fluid retention."
+    },
+    {
+      "drug": "aspirin",
+      "condition": "Peptic Ulcer Disease",
+      "severity": "Major",
+      "warning": "Inhibition of COX-1 impairs gastric mucosal protective prostaglandins, worsening ulcers."
+    },
+    {
+      "drug": "ibuprofen",
+      "condition": "Peptic Ulcer Disease",
+      "severity": "Major",
+      "warning": "High risk of upper gastrointestinal perforation, ulceration, and bleeding."
+    },
+    {
+      "drug": "metoprolol",
+      "condition": "Asthma / COPD",
+      "severity": "Moderate",
+      "warning": "Non-cardioselective beta blockade can induce bronchospasm."
+    },
+    {
+      "drug": "atenolol",
+      "condition": "Asthma / COPD",
+      "severity": "Moderate",
+      "warning": "Potential bronchoconstriction at higher therapeutic dosages."
+    },
+    {
+      "drug": "pseudoephedrine",
+      "condition": "Hypertension",
+      "severity": "Major",
+      "warning": "Alpha-1 adrenergic vasoconstriction can trigger severe hypertensive crises."
+    },
+    {
+      "drug": "prednisone",
+      "condition": "Diabetes Mellitus",
+      "severity": "Moderate",
+      "warning": "Glucocorticoids induce hepatic gluconeogenesis and peripheral insulin resistance."
+    }
+  ],
+  "allergy_cross_reactions": [
+    {
+      "allergen": "penicillin",
+      "matches": ["amoxicillin", "ampicillin", "augmentin", "piperacillin"],
+      "severity": "Major",
+      "warning": "Shared beta-lactam core structure presents high risk of acute anaphylaxis."
+    },
+    {
+      "allergen": "aspirin",
+      "matches": ["ibuprofen", "naproxen", "diclofenac", "ketorolac", "meloxicam"],
+      "severity": "Major",
+      "warning": "Cross-reactive NSAID hypersensitivity (Samter's Triad / bronchospasm / urticaria)."
+    },
+    {
+      "allergen": "sulfa",
+      "matches": ["sulfamethoxazole", "bactrim", "septra", "sulfasalazine"],
+      "severity": "Major",
+      "warning": "Sulfonamide antimicrobial cross-reactivity; risk of severe cutaneous adverse reactions (SCAR)."
+    }
+  ]
+}
