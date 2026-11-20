@@ -1,4 +1,4 @@
-# ✚ MEDISAFE AI
+# ✚ DOSEWEAVE
 ## Clinical Medication Safety & Healthcare Decision Support Platform
 > **Smart Medication Safety, Multi-Drug Risk Prediction, Food-Drug Interaction Screening, and Emergency Dispatch Intelligence**
 
@@ -19,11 +19,11 @@
 
 ## 🩺 Overview & Purpose
 
-**MediSafe AI** is an enterprise-grade clinical decision-support and medication safety platform. It helps patients, caregivers, and medical practitioners prevent adverse drug reactions (ADRs), audit multi-drug prescriptions, evaluate food-drug interactions, analyze prescription labels with computer vision, and locate emergency facilities in real time.
+**DoseWeave** is an enterprise-grade clinical decision-support and medication safety platform. It helps patients, caregivers, and medical practitioners prevent adverse drug reactions (ADRs), audit multi-drug prescriptions, evaluate food-drug interactions, analyze prescription labels with computer vision, and locate emergency facilities in real time.
 
-### Why MediSafe AI?
-- **Adverse Drug Event Prevention**: Over 1.5 million preventable medication errors occur annually. MediSafe AI detects severe contraindications and harmful interactions *before* consumption.
-- **Explainable Machine Learning**: Rather than black-box models, MediSafe AI pairs calibrated ML models (96.6% accuracy) with local factor attribution so users understand *why* a risk level is assigned.
+### Why DoseWeave?
+- **Adverse Drug Event Prevention**: Over 1.5 million preventable medication errors occur annually. DoseWeave detects severe contraindications and harmful interactions *before* consumption.
+- **Explainable Machine Learning**: Rather than black-box models, DoseWeave pairs calibrated ML models (96.6% accuracy) with local factor attribution so users understand *why* a risk level is assigned.
 - **Multimodal AI Assistance**: Evaluates queries via natural text and extracts medication info from camera photos or scanned labels using Gemini Vision AI.
 - **Flexible Navigation**: Work directly on any clinical step at any time without artificial progression locks.
 
@@ -44,7 +44,7 @@
 
 ## 🔄 The 4-Step Clinical Workflow
 
-MediSafe AI features an open, flexible 4-step pipeline accessible in any order:
+DoseWeave features an open, flexible 4-step pipeline accessible in any order:
 
 ```
 [ 1. COLLECT DATA ] ➔ [ 2. ANALYSE RISK ] ➔ [ 3. RECOMMENDATIONS ] ➔ [ 4. NEARBY LOCATIONS ]
@@ -80,7 +80,7 @@ For evaluators and rapid testing, a pre-populated clinical demo account is inclu
 
 | Role | Email Address | Password |
 | :--- | :--- | :--- |
-| **Evaluator Demo** | `demo@medisafe.ai` | `password123` |
+| **Evaluator Demo** | `demo@doseweave.ai` | `password123` |
 
 *(You can also click **CREATE ACCOUNT** on the portal to register any new clinical profile).*
 
@@ -155,7 +155,7 @@ Medical/
 ├── database/                       # Relational Storage Layer
 │   ├── database.py                 # Thread-safe SQLite queries and user auth
 │   ├── schema.py                   # DDL table schemas and indexes
-│   └── medisafe.db                 # SQLite database file
+│   └── doseweave.db                # SQLite database file
 │
 ├── styles/                         # Styling System
 │   └── main.css                    # Modern healthcare light theme & animations
@@ -202,7 +202,7 @@ Open your browser at: **`http://localhost:8501`**
 
 ## 🧪 Automated Testing & Verification
 
-MediSafe AI includes an end-to-end automated test suite verifying database integrity, cryptographic authentication, interaction matching, and ML inference.
+DoseWeave includes an end-to-end automated test suite verifying database integrity, cryptographic authentication, interaction matching, and ML inference.
 
 To execute all tests:
 ```bash
@@ -225,10 +225,10 @@ test_low_risk_prediction ... ok
 test_model_loaded ... ok
 
 ----------------------------------------------------------------------
-Ran 12 tests in 0.12s
+Ran 13 tests in 0.12s
 
 OK
-[SUCCESS] ALL MEDISAFE AI SYSTEM TESTS PASSED SUCCESSFULLY!
+[SUCCESS] ALL DOSEWEAVE SYSTEM TESTS PASSED SUCCESSFULLY!
 ```
 
 ---
@@ -236,7 +236,7 @@ OK
 ## 🛡️ Clinical Safety & Guardrails
 
 > [!IMPORTANT]
-> **Clinical Decision Support Notice**: MediSafe AI is built strictly as a decision-support, risk-screening, and educational research tool.
+> **Clinical Decision Support Notice**: DoseWeave is built strictly as a decision-support, risk-screening, and educational research tool.
 > - It does not provide medical diagnoses or prescribe controlled substances.
 > - It does not instruct users to alter prescribed therapy without consulting their physician.
 > - Acute emergency symptoms (e.g., chest pain, anaphylaxis) trigger an immediate high-risk override directing users to contact 911 / 112 or visit an emergency room.

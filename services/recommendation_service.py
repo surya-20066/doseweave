@@ -1,5 +1,5 @@
 """
-MediSafe AI - Explainable Clinical Recommendation Engine
+DoseWeave - Explainable Clinical Recommendation Engine
 Generates deterministic, rule-based clinical safety alerts and recommendations
 across four structured healthcare decision-support tiers:
 1. WHAT TO REVIEW
@@ -23,16 +23,21 @@ class RecommendationService:
         self,
         risk_level: str,
         risk_score: float,
-        patient: Dict[str, Any],
-        medications: List[Dict[str, Any]],
-        foods: List[Dict[str, Any]],
-        symptoms: List[Dict[str, Any]],
-        interaction_data: Dict[str, Any],
+        patient: Dict[str, Any] = None,
+        medications: List[Dict[str, Any]] = None,
+        foods: List[Dict[str, Any]] = None,
+        symptoms: List[Dict[str, Any]] = None,
+        interaction_data: Dict[str, Any] = None,
         is_emergency: bool = False
     ) -> List[Dict[str, Any]]:
         """
         Synthesizes patient context and outputs prioritized clinical recommendations.
         """
+        patient = patient or {}
+        medications = [m for m in (medications or []) if m]
+        foods = [f for f in (foods or []) if f]
+        symptoms = [s for s in (symptoms or []) if s]
+        interaction_data = interaction_data or {}
         recommendations = []
 
         # -------------------------------------------------------------

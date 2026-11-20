@@ -1,5 +1,5 @@
 """
-MediSafe AI - Patient Information Collection
+DoseWeave - Patient Information Collection
 Unified intake page collecting patient demographics, chronic conditions,
 allergies, multi-drug medications, food & beverages, and symptoms.
 Stored in SQLite connected to the logged-in user.
@@ -8,7 +8,8 @@ Stored in SQLite connected to the logged-in user.
 import streamlit as st
 from database.database import (
     get_patient_by_user, save_complete_patient_data,
-    get_patient_medications, get_patient_foods, get_patient_symptoms
+    get_patient_medications, get_patient_foods, get_patient_symptoms,
+    get_patient_bundle
 )
 from utils.constants import (
     CHRONIC_CONDITIONS, FOOD_CATEGORIES, SYSTEM_SYMPTOMS
@@ -18,17 +19,25 @@ from components.header import render_header
 
 def render_patient_info():
     user_id = st.session_state.get("user_id", 1)
-    patient = get_patient_by_user(user_id)
+    
+    # Fast reliable bundle retrieval ensuring non-None collections
+    bundle = st.session_state.get("patient_bundle")
+    if not bundle or not bundle.get("patient") or st.session_state.get("patient_dirty", False):
+        bundle = get_patient_bundle(user_id)
+        st.session_state.patient_bundle = bundle
+        st.session_state.patient_dirty = False
 
-    patient_id = patient["id"] if patient else None
-    existing_meds = get_patient_medications(patient_id, active_only=True) if patient else []
-    existing_foods = get_patient_foods(patient_id) if patient else []
-    existing_symptoms = get_patient_symptoms(patient_id) if patient else []
+    patient = bundle.get("patient")
+    st.session_state.current_patient = patient
+
+    existing_meds = bundle.get("medications") or []
+    existing_foods = bundle.get("foods") or []
+    existing_symptoms = bundle.get("symptoms") or []
 
     render_header(
         title="COLLECT USER DATA",
         subtitle="Step 1 of 4: Enter and securely store patient information, medication details, food information, allergies and symptoms",
-        breadcrumb="MediSafe AI > Process",
+        breadcrumb="DoseWeave > Process",
         active_step=1
     )
 
@@ -251,6 +260,12 @@ def render_patient_info():
                 foods=cleaned_foods,
                 symptoms=selected_symptoms
             )
+
+            # Immediately refresh cached bundle with newly saved data
+            st.session_state.patient_bundle = get_patient_bundle(user_id)
+            st.session_state.current_patient = st.session_state.patient_bundle.get("patient")
+            st.session_state.patient_dirty = False
+            st.session_state.last_interaction_data = None
 
             st.success("Information saved into SQLite database successfully.")
             # Automatically activate Step 2 and transition

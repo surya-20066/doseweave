@@ -1,10 +1,11 @@
 """
-MediSafe AI - Nearby Hospitals & Emergency Facilities
+DoseWeave - Nearby Hospitals & Emergency Facilities
 Geospatial hospital locator using Google Places API and OpenStreetMap Nominatim / Overpass
 dual-engine with distance sorting, verified emergency centers, and interactive Folium mapping.
 """
 
 import streamlit as st
+import streamlit.components.v1 as components
 import folium
 from streamlit_folium import st_folium
 import os
@@ -21,12 +22,19 @@ def render_clean_html(html_str: str):
         st.markdown(cleaned, unsafe_allow_html=True)
 
 def render_nearby_hospitals():
-    # Emergency Check from latest assessment scoped to user
+    # Fast session-cached patient and assessment retrieval
     user = st.session_state.get("user")
     user_id = user.get("user_id", st.session_state.get("user_id")) if user else st.session_state.get("user_id")
-    patient = get_patient_by_user(user_id) if user_id else None
+    
+    if "current_patient" not in st.session_state or st.session_state.get("patient_dirty", False):
+        st.session_state.current_patient = get_patient_by_user(user_id) if user_id else None
+    patient = st.session_state.get("current_patient")
+
     patient_id = patient["id"] if patient else st.session_state.get("current_patient_id", 1)
-    history = get_assessment_history(patient_id) if patient_id else []
+    
+    if "assessment_history" not in st.session_state or st.session_state.get("assessment_dirty", False):
+        st.session_state.assessment_history = get_assessment_history(patient_id) if patient_id else []
+    history = st.session_state.get("assessment_history", [])
     latest_assessment = history[0] if history else st.session_state.get("last_prediction")
 
     is_high_risk = False
@@ -37,10 +45,27 @@ def render_nearby_hospitals():
 
     render_header(
         title="NEARBY HEALTHCARE LOCATIONS",
-        subtitle="Step 4 of 4: Search for nearby hospitals and healthcare facilities using your current or manually entered location",
-        breadcrumb="MediSafe AI > Process",
+        subtitle="Step 4 of 4: Direct dynamic geospatial locator for emergency centers and hospitals based on your live location",
+        breadcrumb="DoseWeave > Process",
         active_step=4
     )
+
+    # Injected CSS to guarantee removal of map attribution and watermarks
+    st.markdown("""
+        <style>
+        .leaflet-control-attribution,
+        .leaflet-bottom.leaflet-right,
+        .leaflet-control-attribution a {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        #MainMenu, footer, header[data-testid="stHeader"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     if is_high_risk:
         render_clean_html("""
@@ -53,114 +78,140 @@ def render_nearby_hospitals():
 """)
 
     # -------------------------------------------------------------------------
-    # LOCATION OPTIONS: OPTION 1 (CURRENT LOCATION) vs OPTION 2 (ENTER LOCATION MANUALLY)
+    # DIRECT DYNAMIC LOCATION ACQUISITION (HTML5 GPS + LIVE MULTI-IP RESOLVER)
     # -------------------------------------------------------------------------
-    loc_mode = st.radio(
-        "Select Location Method:",
-        ["OPTION 1: USE CURRENT LOCATION", "OPTION 2: ENTER LOCATION MANUALLY"],
-        horizontal=True
-    )
+    # Directly prompt browser for HTML5 Geolocation (GPS / Wi-Fi)
+    geo_script = """
+    <script>
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                const lat = pos.coords.latitude.toFixed(5);
+                const lng = pos.coords.longitude.toFixed(5);
+                const url = new URL(window.parent.location.href);
+                if (url.searchParams.get("live_lat") !== lat || url.searchParams.get("live_lng") !== lng) {
+                    url.searchParams.set("live_lat", lat);
+                    url.searchParams.set("live_lng", lng);
+                    url.searchParams.set("loc_src", "gps");
+                    window.parent.location.href = url.href;
+                }
+            },
+            function(err) {
+                console.log("Browser GPS prompt status:", err.message);
+            },
+            { enableHighAccuracy: true, timeout: 6000, maximumAge: 120000 }
+        );
+    }
+    </script>
+    """
+    components.html(geo_script, height=0, width=0)
 
-    # Initialize live detected location in session state
+    # Read live query parameters if passed from browser GPS
+    query_params = st.query_params
+    live_lat_param = query_params.get("live_lat")
+    live_lng_param = query_params.get("live_lng")
+
+    if live_lat_param and live_lng_param:
+        try:
+            curr_lat = float(live_lat_param)
+            curr_lng = float(live_lng_param)
+            cached_loc = st.session_state.get("current_detected_loc")
+            if not cached_loc or abs(cached_loc.get("lat", 0) - curr_lat) > 0.001 or abs(cached_loc.get("lng", 0) - curr_lng) > 0.001 or cached_loc.get("source") != "Browser GPS (High Accuracy)":
+                rev = hospital_service.reverse_geocode(curr_lat, curr_lng)
+                st.session_state.current_detected_loc = {
+                    "city": rev.get("city") or "Current Area",
+                    "region": rev.get("region") or "",
+                    "country": rev.get("country") or "",
+                    "lat": curr_lat,
+                    "lng": curr_lng,
+                    "zip": rev.get("zip") or "",
+                    "source": "Browser GPS (High Accuracy)",
+                    "display_name": rev.get("display_name")
+                }
+                st.session_state.hospital_results = None
+        except (ValueError, TypeError):
+            pass
+
+    # Ensure location is initialized dynamically
     if "current_detected_loc" not in st.session_state:
         st.session_state.current_detected_loc = hospital_service.detect_current_location()
 
     det = st.session_state.current_detected_loc
-    default_query = f"{det['city']}, {det['region']}"
+    default_query = f"{det['city']}, {det['region']}".strip(", ")
 
-    if loc_mode == "OPTION 1: USE CURRENT LOCATION":
-        col_det1, col_det2 = st.columns([3, 1])
-        with col_det1:
-            render_clean_html(f"""
-<div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 1rem;">
-    <span style="font-weight: 700; color: #15803D; font-size: 0.90rem;">📍 Current Live Location Detected:</span>
-    <span style="color: #0F172A; font-weight: 700; font-size: 0.95rem; margin-left: 6px;">{det['city']}, {det['region']}</span>
-    <span style="color: #64748B; font-size: 0.80rem; margin-left: 8px;">({det['lat']:.4f}° N, {det['lng']:.4f}° E • {det['source']})</span>
+    # Display Direct Dynamic Location Card
+    col_det1, col_det2 = st.columns([3.2, 1.2])
+    with col_det1:
+        render_clean_html(f"""
+<div style="background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%); border: 1px solid #BBF7D0; border-left: 5px solid #16A34A; border-radius: 12px; padding: 0.95rem 1.25rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(22, 163, 74, 0.08);">
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="pulse-dot" style="background-color: #16A34A;"></span>
+        <span style="font-size: 0.76rem; text-transform: uppercase; font-weight: 800; color: #15803D; letter-spacing: 0.06em;">LIVE LOCATION DIRECTLY DETECTED</span>
+    </div>
+    <div style="color: #0F172A; font-weight: 800; font-size: 1.15rem; margin-top: 0.25rem;">
+        📍 {det['city']}{f", {det['region']}" if det.get('region') else ""}{f", {det['country']}" if det.get('country') else ""}
+    </div>
+    <div style="color: #475569; font-size: 0.82rem; margin-top: 0.2rem;">
+        GPS Coordinates: <strong>{det['lat']:.4f}° N, {det['lng']:.4f}° E</strong> &nbsp;•&nbsp; Source: <span style="color: #15803D; font-weight: 700;">{det['source']}</span>
+    </div>
 </div>
 """)
-        with col_det2:
-            if st.button("🔄 Refresh Location", key="btn_refresh_loc", use_container_width=True):
-                st.session_state.current_detected_loc = hospital_service.detect_current_location()
-                st.session_state.hospital_results = None
-                st.rerun()
+    with col_det2:
+        if st.button("🔄 Re-detect Live Location", key="btn_refresh_loc", use_container_width=True):
+            st.session_state.current_detected_loc = hospital_service.detect_current_location()
+            st.session_state.hospital_results = None
+            st.session_state.hospital_location = None
+            st.rerun()
 
-        active_query = f"{det['city']}, {det['region']}"
-        preset_lat, preset_lng = det['lat'], det['lng']
-    else:
-        preset_lat, preset_lng = None, None
-        st.markdown("##### 📍 Quick Location Presets:")
-        q_col1, q_col2, q_col3, q_col4, q_col5, q_col6 = st.columns(6)
-
-        quick_query = None
-        with q_col1:
-            if st.button("Guntur City", use_container_width=True):
-                quick_query = "Guntur, Andhra Pradesh"
-        with q_col2:
-            if st.button("Brodipet", use_container_width=True):
-                quick_query = "Brodipet, Guntur"
-        with q_col3:
-            if st.button("Arundelpet", use_container_width=True):
-                quick_query = "Arundelpet, Guntur"
-        with q_col4:
-            if st.button("Vijayawada", use_container_width=True):
-                quick_query = "Vijayawada, Andhra Pradesh"
-        with q_col5:
-            if st.button("Mangalagiri", use_container_width=True):
-                quick_query = "Mangalagiri, Guntur"
-        with q_col6:
-            if st.button("Tenali", use_container_width=True):
-                quick_query = "Tenali, Guntur"
-
-        if quick_query:
-            st.session_state.hospital_search_query = quick_query
-            default_query = quick_query
-
-        active_query = st.session_state.get("hospital_search_query", default_query)
-
-    # Search Filters Form
+    # Search & Radius Controls
     with st.form("hospital_search_form"):
-        c1, c2, c3 = st.columns([2.2, 1.2, 1.2])
+        c1, c2, c3 = st.columns([2.4, 1.2, 1.2])
         with c1:
             location_input = st.text_input(
-                "Enter locality, street, city or PIN code:",
-                value=default_query,
-                placeholder="e.g. Guntur, Brodipet, Vijayawada, or 522002"
+                "Search Location (Defaults to live detected location):",
+                value=st.session_state.get("hospital_custom_query", default_query),
+                placeholder="Current Live Location or enter custom locality / city"
             )
         with c2:
             radius_km = st.slider("Search Radius (km)", min_value=2, max_value=50, value=20, step=1)
         with c3:
             max_results = st.selectbox("Max Facilities", options=[15, 25, 35, 50], index=1)
 
-        submit_search = st.form_submit_button("FIND NEARBY HOSPITALS", use_container_width=True, type="primary")
+        submit_search = st.form_submit_button("SEARCH NEARBY HOSPITALS", use_container_width=True, type="primary")
 
-    # Determine if search should run
+    # Determine active coordinates and query
+    is_custom_search = submit_search and (location_input.strip() != default_query)
+    if is_custom_search:
+        st.session_state.hospital_custom_query = location_input.strip()
+        active_query = location_input.strip()
+    else:
+        active_query = default_query
+
     should_run = submit_search or st.session_state.get("hospital_trigger_search", False) or (st.session_state.get("hospital_results") is None)
     st.session_state.hospital_trigger_search = False
 
-    active_query = default_query if loc_mode == "OPTION 1: USE CURRENT LOCATION" else (location_input.strip() if submit_search else default_query)
-
     if should_run:
         with st.spinner(f"Locating verified medical facilities near '{active_query}'..."):
-            if loc_mode == "OPTION 1: USE CURRENT LOCATION" and preset_lat and preset_lng:
-                lat, lng = preset_lat, preset_lng
+            if not is_custom_search and det.get("lat") and det.get("lng"):
+                lat, lng = det["lat"], det["lng"]
             else:
                 lat, lng = hospital_service.geocode_location(active_query)
 
             if lat is None:
-                st.error(f"Could not determine coordinates for '{active_query}'. Please try entering the city name or PIN code.")
-                st.session_state.hospital_results = None
-            else:
-                results = hospital_service.search_nearby_hospitals(
-                    lat=lat,
-                    lng=lng,
-                    query_city=active_query,
-                    radius_m=radius_km * 1000,
-                    emergency_mode=is_high_risk,
-                    max_results=max_results
-                )
-                st.session_state.hospital_location = (lat, lng)
-                st.session_state.hospital_results = results
-                st.session_state.hospital_search_query = active_query
+                st.error(f"Could not determine coordinates for '{active_query}'. Falling back to detected live coordinates.")
+                lat, lng = det["lat"], det["lng"]
+
+            results = hospital_service.search_nearby_hospitals(
+                lat=lat,
+                lng=lng,
+                query_city=active_query,
+                radius_m=radius_km * 1000,
+                emergency_mode=is_high_risk,
+                max_results=max_results
+            )
+            st.session_state.hospital_location = (lat, lng)
+            st.session_state.hospital_results = results
+            st.session_state.hospital_search_query = active_query
 
     # Display Results if Available
     if st.session_state.get("hospital_results") is not None:
@@ -173,8 +224,14 @@ def render_nearby_hospitals():
 
         st.markdown(f"### 📍 Found {len(hospitals)} Verified Medical Facilities near **{st.session_state.get('hospital_search_query', '')}**")
 
-        # 1. Interactive Folium Map
-        fmap = folium.Map(location=[center_lat, center_lng], zoom_start=13, tiles="OpenStreetMap")
+        # 1. Interactive Folium Map (with attribution watermark completely disabled)
+        fmap = folium.Map(
+            location=[center_lat, center_lng],
+            zoom_start=13,
+            tiles="OpenStreetMap",
+            attributionControl=False,
+            control_scale=False
+        )
 
         # User Location Marker (Blue)
         folium.Marker(

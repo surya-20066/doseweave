@@ -1,5 +1,5 @@
 """
-MediSafe AI - Risk Gauge Visualization Component
+DoseWeave - Risk Gauge Visualization Component
 Renders an interactive Plotly clinical speedometer gauge.
 """
 

@@ -1,5 +1,5 @@
 """
-MediSafe AI - Hospital Locator & Geospatial Service
+DoseWeave - Hospital Locator & Geospatial Service
 Integrates Google Places API, Geocoding API, Haversine spherical distance calculation,
 and an intelligent OpenStreetMap / Nominatim fallback engine so hospital queries always succeed.
 """
@@ -180,36 +180,154 @@ class HospitalService:
     def set_api_key(self, api_key: str):
         self.api_key = api_key
 
+    def reverse_geocode(self, lat: float, lng: float) -> Dict[str, str]:
+        """
+        Reverse geocodes latitude & longitude into city, state, country, and address
+        dynamically using OpenStreetMap Nominatim.
+        """
+        try:
+            url = "https://nominatim.openstreetmap.org/reverse"
+            headers = {"User-Agent": "DoseWeave-ClinicalSystem/3.0"}
+            params = {
+                "lat": lat,
+                "lon": lng,
+                "format": "json",
+                "addressdetails": 1
+            }
+            resp = requests.get(url, params=params, headers=headers, timeout=5)
+            if resp.status_code == 200:
+                data = resp.json()
+                addr = data.get("address", {})
+                city = (
+                    addr.get("city")
+                    or addr.get("town")
+                    or addr.get("suburb")
+                    or addr.get("neighbourhood")
+                    or addr.get("village")
+                    or addr.get("county")
+                    or "Current Area"
+                )
+                region = addr.get("state") or addr.get("province") or ""
+                country = addr.get("country") or ""
+                zip_code = addr.get("postcode") or ""
+                disp_name = data.get("display_name", f"{city}, {region}")
+                return {
+                    "city": city,
+                    "region": region,
+                    "country": country,
+                    "zip": zip_code,
+                    "display_name": disp_name
+                }
+        except Exception as e:
+            logger.warning(f"Reverse geocode failed for ({lat}, {lng}): {e}")
+        return {
+            "city": "Current Location",
+            "region": "",
+            "country": "",
+            "zip": "",
+            "display_name": f"{lat:.4f}° N, {lng:.4f}° E"
+        }
+
+    _cached_detected_location = None
+
     def detect_current_location(self) -> Dict[str, Any]:
-        """Detects the user's current live location using IP Geolocation."""
+        """
+        Detects the user's current live location directly and dynamically
+        using high-availability IP Geolocation providers with fast 1.0s timeout and caching.
+        """
+        if self._cached_detected_location is not None:
+            return self._cached_detected_location
+
+        # 1. Try ipapi.co (precise, returns HTTPS JSON)
+        try:
+            resp = requests.get("https://ipapi.co/json/", headers={"User-Agent": "DoseWeave/3.0"}, timeout=1.0)
+            if resp.status_code == 200:
+                d = resp.json()
+                if "latitude" in d and "longitude" in d:
+                    loc = {
+                        "city": d.get("city") or "Current City",
+                        "region": d.get("region") or d.get("region_code", ""),
+                        "country": d.get("country_name", ""),
+                        "lat": float(d["latitude"]),
+                        "lng": float(d["longitude"]),
+                        "zip": d.get("postal", ""),
+                        "source": "Live Dynamic Network Geolocation"
+                    }
+                    self._cached_detected_location = loc
+                    return loc
+        except Exception:
+            pass
+
+        # 2. Try ipwho.is (fast, free, unlimited)
+        try:
+            resp = requests.get("https://ipwho.is/", timeout=1.0)
+            if resp.status_code == 200:
+                d = resp.json()
+                if d.get("success"):
+                    loc = {
+                        "city": d.get("city", "Current City"),
+                        "region": d.get("region", ""),
+                        "country": d.get("country", ""),
+                        "lat": float(d["latitude"]),
+                        "lng": float(d["longitude"]),
+                        "zip": d.get("postal", ""),
+                        "source": "Live Dynamic Network Geolocation"
+                    }
+                    self._cached_detected_location = loc
+                    return loc
+        except Exception:
+            pass
+
+        # 3. Try ip-api.com
         try:
             resp = requests.get("http://ip-api.com/json", timeout=3)
             if resp.status_code == 200:
-                data = resp.json()
-                if data.get("status") == "success":
+                d = resp.json()
+                if d.get("status") == "success":
                     return {
-                        "city": data.get("city", "Guntur"),
-                        "region": data.get("regionName", "Andhra Pradesh"),
-                        "lat": float(data.get("lat", 16.3007)),
-                        "lng": float(data.get("lon", 80.4639)),
-                        "zip": data.get("zip", "522002"),
-                        "source": "Live IP Geolocation"
+                        "city": d.get("city", "Current City"),
+                        "region": d.get("regionName", ""),
+                        "country": d.get("country", ""),
+                        "lat": float(d.get("lat")),
+                        "lng": float(d.get("lon")),
+                        "zip": d.get("zip", ""),
+                        "source": "Live Dynamic Network Geolocation"
                     }
         except Exception as e:
-            logger.warning(f"Live IP Geolocation detection failed: {e}")
-        
+            logger.warning(f"ip-api.com detection failed: {e}")
+
+        # 4. Try freeipapi.com
+        try:
+            resp = requests.get("https://freeipapi.com/api/json", timeout=3)
+            if resp.status_code == 200:
+                d = resp.json()
+                if "latitude" in d and "longitude" in d:
+                    return {
+                        "city": d.get("cityName", "Current City"),
+                        "region": d.get("regionName", ""),
+                        "country": d.get("countryName", ""),
+                        "lat": float(d["latitude"]),
+                        "lng": float(d["longitude"]),
+                        "zip": d.get("zipCode", ""),
+                        "source": "Live Dynamic Network Geolocation"
+                    }
+        except Exception as e:
+            logger.warning(f"freeipapi.com detection failed: {e}")
+
+        # Fallback coordinates if offline / network completely unreachable
         return {
-            "city": "Guntur",
-            "region": "Andhra Pradesh",
+            "city": "Current Location",
+            "region": "",
+            "country": "",
             "lat": 16.3007,
             "lng": 80.4639,
-            "zip": "522002",
-            "source": "Regional Preset (Guntur, AP)"
+            "zip": "",
+            "source": "Default GPS Coordinate"
         }
 
     def geocode_location(self, query: str) -> Tuple[Optional[float], Optional[float]]:
         """
-        Converts city name or address into (lat, lng).
+        Converts city name, address, or PIN code into (lat, lng).
         Checks local fast-map first, then Google Geocoding, then OpenStreetMap Nominatim.
         """
         q_clean = query.strip().lower()
@@ -238,7 +356,7 @@ class HospitalService:
         # 3. Fallback to OpenStreetMap Nominatim API
         try:
             osm_url = "https://nominatim.openstreetmap.org/search"
-            headers = {"User-Agent": "MediSafeAI-ClinicalSystem/2.0"}
+            headers = {"User-Agent": "DoseWeave-ClinicalSystem/3.0"}
             params = {"q": query, "format": "json", "limit": 1}
             resp = requests.get(osm_url, params=params, headers=headers, timeout=10)
             if resp.status_code == 200:
@@ -251,8 +369,7 @@ class HospitalService:
         except Exception as e:
             logger.error(f"OpenStreetMap Geocoding error: {e}")
 
-        # Default fallback to Guntur coordinates if geocoding completely fails
-        return 16.3007, 80.4639
+        return None, None
 
     def search_nearby_hospitals(
         self,
@@ -338,7 +455,7 @@ class HospitalService:
         import math
         hospitals = []
         seen_ids = set()
-        headers = {"User-Agent": "MediSafeAI-ClinicalSystem/2.0"}
+        headers = {"User-Agent": "DoseWeave-ClinicalSystem/3.0"}
 
         # Dynamic bounding box scaled by user's radius
         radius_km = max(3.0, radius_m / 1000.0)
@@ -447,31 +564,30 @@ class HospitalService:
             except Exception as e:
                 logger.error(f"City fallback OSM error: {e}")
 
-        # Supplementary check: always integrate verified medical centers if results are sparse
-        if len(hospitals) < 15:
-            for vh in VERIFIED_LOCAL_HOSPITALS:
-                vh_name = vh["name"]
-                if any(vh_name.lower() in h["name"].lower() for h in hospitals):
-                    continue
-                v_lat = vh["lat"]
-                v_lng = vh["lng"]
-                v_dist = haversine_distance(lat, lng, v_lat, v_lng)
-                if v_dist <= radius_km * 2.5 or len(hospitals) < 8:
-                    directions_url = f"https://www.google.com/maps/dir/?api=1&destination={v_lat},{v_lng}"
-                    hospitals.append({
-                        "name": vh_name,
-                        "address": vh["address"],
-                        "lat": v_lat,
-                        "lng": v_lng,
-                        "distance_km": v_dist,
-                        "open_now": True,
-                        "rating": vh["rating"],
-                        "user_ratings_total": vh["user_ratings_total"],
-                        "place_id": f"verified_{len(hospitals)}",
-                        "phone": vh.get("phone", "+91 863 222 0000"),
-                        "directions_url": directions_url,
-                        "source": "Verified Healthcare Directory"
-                    })
+        # Supplementary check: integrate verified hospitals if they are genuinely within search radius
+        for vh in VERIFIED_LOCAL_HOSPITALS:
+            vh_name = vh["name"]
+            if any(vh_name.lower() in h["name"].lower() for h in hospitals):
+                continue
+            v_lat = vh["lat"]
+            v_lng = vh["lng"]
+            v_dist = haversine_distance(lat, lng, v_lat, v_lng)
+            if v_dist <= radius_km:
+                directions_url = f"https://www.google.com/maps/dir/?api=1&destination={v_lat},{v_lng}"
+                hospitals.append({
+                    "name": vh_name,
+                    "address": vh["address"],
+                    "lat": v_lat,
+                    "lng": v_lng,
+                    "distance_km": v_dist,
+                    "open_now": True,
+                    "rating": vh["rating"],
+                    "user_ratings_total": vh["user_ratings_total"],
+                    "place_id": f"verified_{len(hospitals)}",
+                    "phone": vh.get("phone", "+91 863 222 0000"),
+                    "directions_url": directions_url,
+                    "source": "Verified Healthcare Directory"
+                })
 
         hospitals.sort(key=lambda h: (h["distance_km"] is None, h["distance_km"] or 0))
         if hospitals and emergency_mode:

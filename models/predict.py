@@ -1,5 +1,5 @@
 """
-MediSafe AI - Real-Time Clinical Risk Prediction Engine
+DoseWeave - Real-Time Clinical Risk Prediction Engine
 Connects patient data, feature engineering, trained machine learning model,
 calibrated probability estimation, and explainability attribution.
 """
@@ -46,11 +46,11 @@ class RiskPredictor:
 
     def predict_risk(
         self,
-        patient: Dict[str, Any],
-        medications: List[Dict[str, Any]],
-        foods: List[Dict[str, Any]],
-        symptoms: List[Dict[str, Any]],
-        interaction_data: Dict[str, Any]
+        patient: Dict[str, Any] = None,
+        medications: List[Dict[str, Any]] = None,
+        foods: List[Dict[str, Any]] = None,
+        symptoms: List[Dict[str, Any]] = None,
+        interaction_data: Dict[str, Any] = None
     ) -> Dict[str, Any]:
         """
         Executes end-to-end real-time inference:
@@ -60,6 +60,12 @@ class RiskPredictor:
         4. Emergency safety check
         5. Explainable AI top-factors attribution
         """
+        patient = patient or {}
+        medications = [m for m in (medications or []) if m]
+        foods = [f for f in (foods or []) if f]
+        symptoms = [s for s in (symptoms or []) if s]
+        interaction_data = interaction_data or {}
+
         # 1. Feature extraction
         features_df = extract_features_from_patient(
             patient, medications, foods, symptoms, interaction_data

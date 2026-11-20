@@ -1,15 +1,24 @@
 """
-MediSafe AI - Clinical Header Component
+DoseWeave - Clinical Header Component
 Elevated, modern, high-contrast header matching top-tier healthcare SaaS applications.
 """
 
 import streamlit as st
 from database.database import get_patient, get_patient_by_user
 
-def render_header(title: str, subtitle: str, breadcrumb: str = "MediSafe AI", active_step: int = None):
+def render_header(title: str, subtitle: str, breadcrumb: str = "DoseWeave", active_step: int = None):
     user = st.session_state.get("user")
     user_id = user.get("user_id", st.session_state.get("user_id")) if user else st.session_state.get("user_id")
-    patient = get_patient_by_user(user_id) if user_id else get_patient(st.session_state.get("current_patient_id", 1))
+    
+    # Fast session-cached patient retrieval to eliminate database overhead
+    patient = st.session_state.get("current_patient")
+    if not patient and user_id:
+        patient = get_patient_by_user(user_id)
+        if patient:
+            st.session_state.current_patient = patient
+    elif not patient:
+        patient = get_patient(st.session_state.get("current_patient_id", 1))
+
     patient_text = f"👤 <strong>{patient['name']}</strong> &nbsp;|&nbsp; {patient['age']}y • {patient['gender']}" if patient else "👤 <strong>Active Record</strong> &nbsp;|&nbsp; Verified"
 
     st.markdown(f"""

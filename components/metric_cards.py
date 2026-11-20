@@ -1,5 +1,5 @@
 """
-MediSafe AI - Metric Cards Component
+DoseWeave - Metric Cards Component
 Renders clean healthcare metric cards with clinical values, accent borders, and status badges.
 """
 

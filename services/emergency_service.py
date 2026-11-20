@@ -1,5 +1,5 @@
 """
-MediSafe AI - Emergency Symptom Triage Service
+DoseWeave - Emergency Symptom Triage Service
 Detects high-acuity clinical red-flag indicators (e.g. respiratory distress,
 chest pain, neurological compromise) and provides rapid escalation protocols.
 """
@@ -10,12 +10,13 @@ from utils.constants import EMERGENCY_SYMPTOMS
 class EmergencyService:
     def evaluate_emergency(
         self,
-        symptoms: List[Dict[str, Any]],
+        symptoms: List[Dict[str, Any]] = None,
         risk_level: str = ""
     ) -> Dict[str, Any]:
         """
         Evaluates symptom acuity and returns emergency state with protocols.
         """
+        symptoms = [s for s in (symptoms or []) if s]
         flagged_symptoms = []
         for s in symptoms:
             name = s.get("symptom_name", "")

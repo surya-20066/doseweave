@@ -1,5 +1,5 @@
 """
-MediSafe AI - Database Unit Tests
+DoseWeave - Database Unit Tests
 Verifies SQLite CRUD operations for users, patient records, medications, and assessment logs.
 """
 

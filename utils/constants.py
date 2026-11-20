@@ -1,11 +1,11 @@
 """
-MediSafe AI - Clinical & System Constants
+DoseWeave - Clinical & System Constants
 Defines standard clinical risk thresholds, symptoms, food categories,
 UI theme colors, and safety guidelines.
 """
 
 # Application Metadata
-APP_NAME = "MediSafe AI"
+APP_NAME = "DOSEWEAVE"
 APP_TAGLINE = "AI-Powered Medication Safety, Risk Prediction, Food Interaction and Emergency Support System"
 APP_VERSION = "2.0.0 (Clinical Decision Support Edition)"
 
@@ -114,7 +114,7 @@ COMMON_ALLERGIES = [
 
 # Disclaimer strings
 CLINICAL_DISCLAIMER = (
-    "MEDISAFE AI DISCLAIMER: This software is an educational research and clinical "
+    "DOSEWEAVE DISCLAIMER: This software is an educational research and clinical "
     "decision-support prototype. It does not provide definitive medical diagnoses, "
     "prescriptions, or substitute professional judgment. All medication changes must "
     "be approved by a licensed physician or clinical pharmacist."

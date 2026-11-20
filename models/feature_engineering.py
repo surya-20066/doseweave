@@ -1,5 +1,5 @@
 """
-MediSafe AI - Feature Engineering & Preprocessing Pipeline
+DoseWeave - Feature Engineering & Preprocessing Pipeline
 Defines feature schema, transformation pipelines (ColumnTransformer, StandardScaler, OneHotEncoder),
 and real-time patient feature extraction.
 """
@@ -134,9 +134,15 @@ def extract_features_from_patient(
     Constructs a 1-row feature DataFrame from real patient data, active medications,
     foods consumed, current symptoms, and verified interaction analysis results.
     """
-    age = int(patient.get("age", 30))
-    weight = float(patient.get("weight", 70.0))
-    gender = patient.get("gender", "Male")
+    patient = patient or {}
+    medications = medications or []
+    foods = foods or []
+    symptoms = symptoms or []
+    interaction_data = interaction_data or {}
+
+    age = int(patient.get("age", 30) or 30)
+    weight = float(patient.get("weight", 70.0) or 70.0)
+    gender = patient.get("gender", "Male") or "Male"
     if gender not in ["Male", "Female"]:
         gender = "Male"
 
@@ -151,7 +157,7 @@ def extract_features_from_patient(
         age_group = "Geriatric (65+)"
 
     # Conditions
-    cond_list = [c.lower() for c in patient.get("conditions", [])]
+    cond_list = [str(c).lower() for c in (patient.get("conditions") or []) if c]
     kidney = 1 if any("kidney" in c or "renal" in c for c in cond_list) else 0
     liver = 1 if any("liver" in c or "hepatic" in c or "cirrhosis" in c for c in cond_list) else 0
     heart = 1 if any("heart" in c or "cardiac" in c or "cad" in c for c in cond_list) else 0
@@ -159,12 +165,12 @@ def extract_features_from_patient(
     num_conditions = len(cond_list)
 
     # Allergies
-    allergies = patient.get("allergies", [])
+    allergies = patient.get("allergies") or []
     num_allergies = len(allergies)
 
     # Medications
     num_meds = len(medications)
-    med_classes = set(m.get("generic_name", m.get("medicine_name", "")) for m in medications)
+    med_classes = set(m.get("generic_name", m.get("medicine_name", "")) for m in medications if isinstance(m, dict))
     class_count = max(1, len(med_classes))
 
     duplicate_flag = 1 if len(interaction_data.get("duplicates", [])) > 0 else 0

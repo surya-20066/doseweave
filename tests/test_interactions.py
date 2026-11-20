@@ -1,5 +1,5 @@
 """
-MediSafe AI - Interaction Intelligence Unit Tests
+DoseWeave - Interaction Intelligence Unit Tests
 Verifies pharmacological cross-matching against verified databases.
 """
 

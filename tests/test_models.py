@@ -1,5 +1,5 @@
 """
-MediSafe AI - Machine Learning Model Unit Tests
+DoseWeave - Machine Learning Model Unit Tests
 Verifies feature engineering, model inference, probability calibration, and explainability.
 """
 

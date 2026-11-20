@@ -1,5 +1,5 @@
 """
-MediSafe AI - Medication Risk Dataset Generation Pipeline
+DoseWeave - Medication Risk Dataset Generation Pipeline
 Generates a structured hybrid training dataset combining:
 1. Documented FDA FAERS adverse event risk profiles
 2. SIDER adverse drug reaction reference rules

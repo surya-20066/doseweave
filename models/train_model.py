@@ -1,5 +1,5 @@
 """
-MediSafe AI - Machine Learning Model Training Pipeline
+DoseWeave - Machine Learning Model Training Pipeline
 Trains, benchmarks, and evaluates Logistic Regression, Random Forest, and XGBoost classifiers.
 Selects the best model based on macro F1-score and saves weights, preprocessor, and performance metrics.
 """
@@ -24,7 +24,7 @@ SAVED_DIR = os.path.join(os.path.dirname(__file__), "saved")
 DATASET_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed", "medication_risk_dataset.csv")
 
 def train_and_evaluate():
-    logger.info("Starting MediSafe AI Model Training Pipeline...")
+    logger.info("Starting DoseWeave Model Training Pipeline...")
 
     if not os.path.exists(DATASET_PATH):
         raise FileNotFoundError(f"Dataset not found at {DATASET_PATH}. Please run data/generate_training_dataset.py first.")
@@ -42,7 +42,7 @@ def train_and_evaluate():
     best_model_obj = None
 
     print("\n" + "="*60)
-    print("      MEDISAFE AI - MODEL BENCHMARK & EVALUATION")
+    print("      DOSEWEAVE - MODEL BENCHMARK & EVALUATION")
     print("="*60)
 
     for name, model in candidates.items():

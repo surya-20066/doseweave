@@ -1,5 +1,5 @@
 """
-MediSafe AI - Model Explainability & Feature Attribution
+DoseWeave - Model Explainability & Feature Attribution
 Computes global feature importances and local patient-level contributing risk factors.
 Connects predictions directly to actual pharmacological and clinical features.
 """

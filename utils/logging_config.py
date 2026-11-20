@@ -1,12 +1,12 @@
 """
-MediSafe AI - Structured Logging Configuration
+DoseWeave - Structured Logging Configuration
 Provides consistent, formatted logging across modules without leaking sensitive keys.
 """
 
 import logging
 import sys
 
-def setup_logger(name: str = "medisafe_ai") -> logging.Logger:
+def setup_logger(name: str = "doseweave") -> logging.Logger:
     logger = logging.getLogger(name)
     if not logger.handlers:
         logger.setLevel(logging.INFO)

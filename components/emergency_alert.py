@@ -1,5 +1,5 @@
 """
-MediSafe AI - Emergency Alert Banner Component
+DoseWeave - Emergency Alert Banner Component
 Renders high-acuity clinical red-flag alert box with instant navigation to emergency assistance.
 """
 

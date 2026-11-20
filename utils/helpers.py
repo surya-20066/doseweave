@@ -1,5 +1,5 @@
 """
-MediSafe AI - General Utility Helpers
+DoseWeave - General Utility Helpers
 Provides mathematical formulas, distance calculators, formatting helpers, and conversions.
 """
 

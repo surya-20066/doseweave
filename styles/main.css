@@ -1,4 +1,4 @@
-/* MediSafe AI - Ultra-Modern Healthcare SaaS Design System */
+/* DoseWeave - Ultra-Modern Healthcare SaaS Design System */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -60,9 +60,54 @@ html, body, [data-testid="stAppViewContainer"], .stApp {
   }
 }
 
-/* Hide default streamlit header bar decoration */
-header[data-testid="stHeader"] {
+/* =========================================================================
+   HIDE ALL STREAMLIT WATERMARKS, BRANDING, FOOTERS, HEADERS, AND MAP ATTRIBUTION
+   ========================================================================= */
+#MainMenu {
+  visibility: hidden !important;
+  display: none !important;
+}
+
+footer {
+  visibility: hidden !important;
+  display: none !important;
+  height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+footer:after {
+  content: "" !important;
+  display: none !important;
+}
+
+header[data-testid="stHeader"],
+header {
+  visibility: hidden !important;
+  display: none !important;
+  height: 0 !important;
   background: transparent !important;
+}
+
+.stDeployButton,
+div[data-testid="stToolbar"],
+div[data-testid="stDecoration"],
+div[data-testid="stStatusWidget"],
+#manage-app-button,
+.viewerBadge_container__1QSob,
+.styles_viewerBadge__CvCae,
+[data-testid="manage-app-button"] {
+  visibility: hidden !important;
+  display: none !important;
+}
+
+/* Remove Leaflet / OpenStreetMap map watermarks and attributions */
+.leaflet-control-attribution,
+.leaflet-bottom.leaflet-right,
+.leaflet-control-attribution a {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }
 
 /* Main Container Max-Width and Clean Padding */
@@ -863,7 +908,7 @@ div[class*="st-key-topnav_home_btn"] button:hover {
 /* FUTURISTIC HEALTHCARE AI - ANIMATION SUITE & 3D VISUAL SYSTEM              */
 /* ========================================================================= */
 
-/* 1. Animate the MEDISAFE AI Title with Upward Motion & Soft Glow */
+/* 1. Animate the DOSEWEAVE Title with Fast Responsive Glow */
 .hero-title {
   font-size: 3.2rem !important;
   font-weight: 800 !important;
@@ -873,19 +918,17 @@ div[class*="st-key-topnav_home_btn"] button:hover {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   margin-bottom: 0.75rem !important;
-  animation: heroTitleEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both, heroGlowPulse 4.5s ease-in-out infinite alternate !important;
+  animation: heroTitleEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
 @keyframes heroTitleEnter {
   0% {
     opacity: 0;
-    transform: translateY(22px);
-    filter: blur(4px);
+    transform: translateY(10px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0px);
   }
 }
 
@@ -898,7 +941,7 @@ div[class*="st-key-topnav_home_btn"] button:hover {
   }
 }
 
-/* 2. Hero Tag, Subtitle & Description Entrance Animations */
+/* 2. Fast Hero Tag, Subtitle & Description Entrance Animations */
 .hero-tag {
   display: inline-flex;
   align-items: center;
@@ -914,7 +957,7 @@ div[class*="st-key-topnav_home_btn"] button:hover {
   text-transform: uppercase;
   padding: 0.4rem 0.95rem;
   border-radius: 9999px;
-  animation: heroFadeSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both !important;
+  animation: heroFadeSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1) both !important;
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
 }
 
@@ -923,7 +966,7 @@ div[class*="st-key-topnav_home_btn"] button:hover {
   font-weight: 700 !important;
   color: #2563EB !important;
   margin-bottom: 1.25rem !important;
-  animation: heroFadeSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both !important;
+  animation: heroFadeSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
 .hero-desc {
@@ -934,13 +977,13 @@ div[class*="st-key-topnav_home_btn"] button:hover {
   max-width: 760px !important;
   margin-left: auto !important;
   margin-right: auto !important;
-  animation: heroFadeSlide 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both !important;
+  animation: heroFadeSlide 0.15s cubic-bezier(0.16, 1, 0.3, 1) both !important;
 }
 
 @keyframes heroFadeSlide {
   0% {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
@@ -950,13 +993,13 @@ div[class*="st-key-topnav_home_btn"] button:hover {
 
 /* 3. Section Reveal Animation */
 .section-reveal {
-  animation: sectionEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: sectionEntrance 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @keyframes sectionEntrance {
   0% {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
@@ -1072,6 +1115,26 @@ div[class*="st-key-topnav_home_btn"] button:hover {
     margin-bottom: 1rem !important;
   }
 }
+
+/* 9. Admin Navigation & Timeline Styling */
+div[class*="st-key-topnav_admin_auth"] button {
+  background: #ECFDF5 !important;
+  color: #047857 !important;
+  border: 1.5px solid #A7F3D0 !important;
+  border-radius: 9999px !important;
+  font-weight: 800 !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.04em !important;
+  transition: all 0.2s ease !important;
+}
+
+div[class*="st-key-topnav_admin_auth"] button:hover {
+  background: #D1FAE5 !important;
+  border-color: #059669 !important;
+  color: #065F46 !important;
+  transform: translateY(-1px) !important;
+}
+
 
 
 

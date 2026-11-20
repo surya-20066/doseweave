@@ -1,5 +1,5 @@
 """
-MediSafe AI - Multimodal Gemini AI Service
+DoseWeave - Multimodal Gemini AI Service
 Provides vision-based prescription OCR parsing, educational summarization,
 and interactive patient Q&A.
 Strictly scoped for educational comprehension and text understanding — not numerical risk prediction.
@@ -22,7 +22,7 @@ except ImportError:
     GENAI_AVAILABLE = False
 
 PRESCRIPTION_SYSTEM_PROMPT = """
-You are MediSafe AI, an educational clinical prescription assistant.
+You are DoseWeave, an educational clinical prescription assistant.
 Carefully inspect the uploaded prescription image.
 Extract only the information that is clearly legible on the prescription.
 
@@ -57,7 +57,7 @@ State clearly that this analysis is an educational AI transcription aid and does
 """
 
 QA_SYSTEM_PROMPT = """
-You are MediSafe AI, an educational healthcare assistant helping a patient understand their uploaded prescription image.
+You are DoseWeave, an educational healthcare assistant helping a patient understand their uploaded prescription image.
 Answer the user's specific inquiry using only the legible content from the prescription and well-established clinical pharmacology reference facts.
 
 IMPORTANT SAFETY GUARDRAILS:

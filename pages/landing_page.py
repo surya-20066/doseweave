@@ -1,5 +1,5 @@
 """
-MediSafe AI - Professional Home / Landing Page
+DoseWeave - Professional Home / Landing Page
 Introduces the platform, its key capabilities, architecture,
 and displays the 4-Step Clinical Process with accessible, high-contrast buttons.
 """
@@ -19,13 +19,13 @@ def render_landing_page():
                 CLINICAL MEDICATION SAFETY & HEALTHCARE SUPPORT SYSTEM
             </div>
             <h1 class="hero-title">
-                MEDISAFE AI
+                DOSEWEAVE
             </h1>
             <div class="hero-subtitle">
                 "Your Smart Medication Safety and Healthcare Support Assistant"
             </div>
             <p class="hero-desc">
-                MediSafe AI helps users organize health information, analyze medication-related risk, ask healthcare-related questions using text or images, receive safety-oriented recommendations, and find nearby healthcare facilities.
+                DoseWeave helps users organize health information, analyze medication-related risk, manage interaction-aware multi-medicine schedules and reminders, and find nearby healthcare facilities.
             </p>
         </div>
     """, unsafe_allow_html=True)
@@ -33,7 +33,7 @@ def render_landing_page():
     st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
 
     # -------------------------------------------------------------------------
-    # 2. WHAT IS MEDISAFE AI & CORE CAPABILITIES
+    # 2. WHAT IS DOSEWEAVE & CORE CAPABILITIES
     # -------------------------------------------------------------------------
     st.markdown("""
         <div class="clean-card section-reveal" style="padding: 2rem 2.25rem; margin-bottom: 2.5rem;">
@@ -43,10 +43,10 @@ def render_landing_page():
                         ABOUT THE PLATFORM
                     </div>
                     <div style="font-size: 1.25rem; font-weight: 800; color: #0F172A; margin-bottom: 0.6rem;">
-                        What is MediSafe AI?
+                        What is DoseWeave?
                     </div>
                     <div style="font-size: 0.88rem; color: #64748B; line-height: 1.6;">
-                        MediSafe AI is a specialized clinical decision-support and medication safety platform. It pairs calibrated Machine Learning models with medical safety knowledge bases to evaluate multi-drug regimens and detect potential adverse drug events before they happen.
+                        DoseWeave is a specialized clinical decision-support and medication safety platform. It pairs calibrated Machine Learning models with medical safety knowledge bases to evaluate multi-drug regimens and detect potential adverse drug events before they happen.
                     </div>
                 </div>
                 <div>
@@ -54,7 +54,7 @@ def render_landing_page():
                         CLINICAL CAPABILITIES
                     </div>
                     <div style="font-size: 1.25rem; font-weight: 800; color: #0F172A; margin-bottom: 0.6rem;">
-                        What does MediSafe AI do?
+                        What does DoseWeave do?
                     </div>
                     <div style="font-size: 0.88rem; color: #64748B; line-height: 1.6;">
                         It audits active prescriptions against food and beverage intake, cross-references chronic health conditions and allergies, calculates personalized risk scores, answers clinical questions via multimodal OCR and AI, and locates nearby emergency facilities.
@@ -126,12 +126,12 @@ def render_landing_page():
         st.markdown("""
             <div class="clean-card step-card step-card-3" style="height: 100%; border-top: 4px solid #0D9488; padding: 1.25rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <span class="floating-icon" style="font-size: 1.8rem;">🤖</span>
+                    <span class="floating-icon" style="font-size: 1.8rem;">🔔</span>
                     <span style="background: #CCFBF1; color: #0F766E; font-weight: 800; font-size: 0.75rem; padding: 3px 8px; border-radius: 9999px; border: 1px solid #99F6E4;">STEP 3</span>
                 </div>
-                <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-bottom: 0.45rem;">AI RECOMMENDATION SYSTEM</div>
+                <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-bottom: 0.45rem;">AI REMINDER SYSTEM</div>
                 <div style="font-size: 0.85rem; color: #64748B; line-height: 1.55;">
-                    Ask questions using text or upload an image such as a prescription or medicine label for AI-assisted analysis and safety-oriented recommendations.
+                    Generate interaction-aware multi-medicine schedules, receive verified timing recommendations, and manage daily dose reminders.
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -145,7 +145,7 @@ def render_landing_page():
                 </div>
                 <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-bottom: 0.45rem;">NEARBY HEALTHCARE LOCATIONS</div>
                 <div style="font-size: 0.85rem; color: #64748B; line-height: 1.55;">
-                    Search for nearby hospitals and healthcare facilities using your current or manually entered location.
+                    Directly and dynamically locate nearby hospitals and emergency facilities based on your live geolocation.
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -154,7 +154,7 @@ def render_landing_page():
     st.markdown("""
         <div class="clean-card section-reveal" style="padding: 1.25rem 1.75rem; text-align: center;">
             <div style="font-size: 0.85rem; color: #64748B; line-height: 1.5;">
-                <strong>Clinical Decision Support Notice:</strong> MediSafe AI provides automated risk screening, pharmacological knowledge retrieval, and emergency locator guidance for educational and research evaluation. Always verify findings with qualified healthcare professionals.
+                <strong>Clinical Decision Support Notice:</strong> DoseWeave provides automated risk screening, pharmacological knowledge retrieval, and emergency locator guidance for educational and research evaluation. Always verify findings with qualified healthcare professionals.
             </div>
         </div>
     """, unsafe_allow_html=True)

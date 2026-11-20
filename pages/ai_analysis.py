@@ -1,5 +1,5 @@
 """
-MediSafe AI - AI Analysis & Recommendations Page
+DoseWeave - AI Analysis & Recommendations Page
 Dual-mode clinical intelligence interface supporting both text inquiries and multimodal image uploads.
 Generates structured 5-tier safety recommendations strictly compliant with medical guardrails.
 """
@@ -8,7 +8,7 @@ import streamlit as st
 from PIL import Image
 from database.database import (
     get_patient_by_user, get_patient_medications, get_patient_foods,
-    get_patient_symptoms, get_assessment_history
+    get_patient_symptoms, get_assessment_history, get_patient_bundle
 )
 from services.gemini_service import gemini_service
 from services.interaction_service import interaction_service
@@ -18,12 +18,21 @@ from utils.constants import CLINICAL_DISCLAIMER
 
 def render_ai_analysis():
     user_id = st.session_state.get("user_id", 1)
-    patient = get_patient_by_user(user_id)
+    
+    # Fast reliable bundle retrieval ensuring non-None collections
+    bundle = st.session_state.get("patient_bundle")
+    if not bundle or not bundle.get("patient") or st.session_state.get("patient_dirty", False):
+        bundle = get_patient_bundle(user_id)
+        st.session_state.patient_bundle = bundle
+        st.session_state.patient_dirty = False
+
+    patient = bundle.get("patient")
+    st.session_state.current_patient = patient
 
     render_header(
         title="AI RECOMMENDATION SYSTEM",
         subtitle="Step 3 of 4: Ask questions using text or upload an image such as a prescription or medicine label for AI-assisted analysis and safety-oriented recommendations",
-        breadcrumb="MediSafe AI > Process",
+        breadcrumb="DoseWeave > Process",
         active_step=3
     )
 
@@ -35,20 +44,25 @@ def render_ai_analysis():
         return
 
     patient_id = patient["id"]
-    medications = get_patient_medications(patient_id, active_only=True)
-    foods = get_patient_foods(patient_id)
-    symptoms = get_patient_symptoms(patient_id)
-    history = get_assessment_history(patient_id)
+    medications = bundle.get("medications") or []
+    foods = bundle.get("foods") or []
+    symptoms = bundle.get("symptoms") or []
+    history = bundle.get("history") or []
     latest_assessment = history[0] if history else None
     risk_level = latest_assessment["risk_level"] if latest_assessment else "MODERATE RISK"
     risk_score = latest_assessment["risk_score"] if latest_assessment else 45.0
 
-    interaction_data = interaction_service.analyze_all(
-        medications=medications,
-        foods=foods,
-        conditions=patient.get("conditions", []),
-        allergies=patient.get("allergies", [])
-    )
+    # Fast cached interaction analysis
+    if "last_interaction_data" in st.session_state:
+        interaction_data = st.session_state.last_interaction_data
+    else:
+        interaction_data = interaction_service.analyze_all(
+            medications=medications,
+            foods=foods,
+            conditions=patient.get("conditions", []),
+            allergies=patient.get("allergies", [])
+        )
+        st.session_state.last_interaction_data = interaction_data
 
     # -------------------------------------------------------------------------
     # DUAL INPUT SELECTION (Option A: Text Query | Option B: Image Query)
@@ -105,7 +119,7 @@ def render_ai_analysis():
                 cond_summary = ", ".join(patient.get("conditions", [])) or "None"
 
                 prompt = f"""
-You are MediSafe AI, a professional educational clinical decision-support assistant.
+You are DoseWeave, a professional educational clinical decision-support assistant.
 A patient has asked a medication question.
 
 PATIENT CONTEXT:

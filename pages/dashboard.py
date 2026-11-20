@@ -1,5 +1,5 @@
 """
-MediSafe AI - User Dashboard & Workflow Progress
+DoseWeave - User Dashboard & Workflow Progress
 Guides the authenticated user through the clinical safety journey with live progress status.
 """
 
@@ -24,10 +24,10 @@ def render_dashboard():
     has_patient_profile = (patient is not None)
 
     patient_id = patient["id"] if has_patient_profile else None
-    medications = get_patient_medications(patient_id, active_only=True) if has_patient_profile else []
-    foods = get_patient_foods(patient_id) if has_patient_profile else []
-    symptoms = get_patient_symptoms(patient_id) if has_patient_profile else []
-    history = get_assessment_history(patient_id) if has_patient_profile else []
+    medications = (get_patient_medications(patient_id, active_only=True) if has_patient_profile else []) or []
+    foods = (get_patient_foods(patient_id) if has_patient_profile else []) or []
+    symptoms = (get_patient_symptoms(patient_id) if has_patient_profile else []) or []
+    history = (get_assessment_history(patient_id) if has_patient_profile else []) or []
 
     has_prediction = len(history) > 0
     latest_assessment = history[0] if has_prediction else None
@@ -38,8 +38,8 @@ def render_dashboard():
         foods=foods,
         conditions=patient.get("conditions", []) if patient else [],
         allergies=patient.get("allergies", []) if patient else []
-    )
-    emergency_data = emergency_service.evaluate_emergency(symptoms)
+    ) or {}
+    emergency_data = emergency_service.evaluate_emergency(symptoms) or {"is_emergency": False}
 
     # Top Welcome Bar
     st.markdown(f"""
@@ -120,23 +120,24 @@ def render_dashboard():
             st.session_state.current_page = "risk_prediction"
             st.rerun()
 
-    # Step 3 Card: AI Analysis
+    # Step 3 Card: AI Reminder System
     with c3:
         st.markdown(f"""
             <div class="clean-card" style="height: 100%; border-top: 4px solid #0D9488;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
                     <span style="font-size: 0.72rem; font-weight: 800; color: #64748B; text-transform: uppercase;">STEP 3</span>
-                    <span style="font-size: 1.4rem;">🤖</span>
+                    <span style="font-size: 1.4rem;">🔔</span>
                 </div>
-                <div style="font-weight: 800; font-size: 1.1rem; color: #0F172A; margin: 0.25rem 0 0.4rem 0;">Ask AI for Analysis</div>
-                <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 0.85rem; line-height: 1.45;">Ask text questions or scan prescription images.</div>
+                <div style="font-weight: 800; font-size: 1.1rem; color: #0F172A; margin: 0.25rem 0 0.4rem 0;">AI Reminder System</div>
+                <div style="font-size: 0.82rem; color: #64748B; margin-bottom: 0.85rem; line-height: 1.45;">Interaction-aware scheduling & dose reminders.</div>
                 <div style="background: #EFF6FF; color: #1D4ED8; font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 9999px; display: inline-block; margin-bottom: 0.85rem;">
-                    AI ANALYSIS READY
+                    SCHEDULE & REMINDERS
                 </div>
             </div>
         """, unsafe_allow_html=True)
-        if st.button("Open AI Analysis →", key="dash_btn_step3", use_container_width=True):
-            st.session_state.current_page = "ai_analysis"
+        if st.button("Open AI Reminders →", key="dash_btn_step3", use_container_width=True):
+            st.session_state.current_page = "process"
+            st.session_state.process_step = 3
             st.rerun()
 
     # Step 4 Card: Nearby Hospitals
@@ -166,10 +167,14 @@ def render_dashboard():
     current_risk_level = latest_assessment["risk_level"] if latest_assessment else "PENDING EVAL"
     emergency_status_str = "ACTIVE ALERT" if emergency_data["is_emergency"] else "NO ACTIVE ALERT"
 
+    num_dd = len(interaction_data.get("drug_drug", []))
+    num_ci = len(interaction_data.get("contraindications", []))
+    num_df = len(interaction_data.get("drug_food", []))
+
     render_metrics_row(
         num_medicines=len(medications),
-        num_interactions=len(interaction_data["drug_drug"]) + len(interaction_data["contraindications"]),
-        num_food_alerts=len(interaction_data["drug_food"]),
+        num_interactions=num_dd + num_ci,
+        num_food_alerts=num_df,
         risk_level=current_risk_level,
         emergency_status=emergency_status_str
     )

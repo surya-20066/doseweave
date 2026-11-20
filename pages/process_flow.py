@@ -1,25 +1,19 @@
 """
-MediSafe AI - Continuous Process Flow Controller
+DoseWeave - Continuous Process Flow Controller
 Orchestrates the 4-step sequential clinical pipeline:
   Step 1: COLLECT USER DATA
   Step 2: ANALYSE THE RISK
   Step 3: AI RECOMMENDATION SYSTEM
   Step 4: NEARBY HEALTHCARE LOCATIONS
-
-Features progressive step activation:
-  - Step 1: Active
-  - Step 2: Locked until Step 1 data is saved
-  - Step 3: Locked until Step 2 risk analysis is completed
-  - Step 4: Available / Active after recommendations
 """
 
 import streamlit as st
-from database.database import get_patient_by_user, get_assessment_history
+from database.database import get_patient_by_user, get_assessment_history, get_patient_bundle
 
 # Import the 4 underlying pages
 from pages.patient_info import render_patient_info
 from pages.risk_prediction import render_risk_prediction
-from pages.ai_analysis import render_ai_analysis
+from pages.ai_reminder import render_ai_reminder
 from pages.nearby_hospitals import render_nearby_hospitals
 
 def render_process_flow():
@@ -31,11 +25,18 @@ def render_process_flow():
 
     user_id = user.get("user_id", st.session_state.get("user_id", 1))
 
-    # Determine completion status of each step
-    patient = get_patient_by_user(user_id)
+    # Fast reliable bundle retrieval
+    bundle = st.session_state.get("patient_bundle")
+    if not bundle or not bundle.get("patient") or st.session_state.get("patient_dirty", False):
+        bundle = get_patient_bundle(user_id)
+        st.session_state.patient_bundle = bundle
+        st.session_state.patient_dirty = False
+
+    patient = bundle.get("patient")
+    st.session_state.current_patient = patient
     has_patient_profile = (patient is not None)
 
-    history = get_assessment_history(patient["id"]) if has_patient_profile else []
+    history = bundle.get("history") or []
     has_risk_assessment = (len(history) > 0 or "last_prediction" in st.session_state)
 
     has_recommendations = (
@@ -104,8 +105,8 @@ def render_process_flow():
 
     # Step 3 Button - Unlocked for direct access anytime
     with t_col3:
-        s3_badge = "✓" if step3_completed else ("●" if current_step == 3 else "🤖")
-        s3_label = f"{s3_badge} 3. RECOMMENDATIONS"
+        s3_badge = "✓" if step3_completed else ("●" if current_step == 3 else "🔔")
+        s3_label = f"{s3_badge} 3. AI REMINDER"
         s3_type = "primary" if current_step == 3 else "secondary"
         if st.button(s3_label, key="step_tab_3", use_container_width=True, type=s3_type):
             st.session_state.process_step = 3
@@ -130,7 +131,7 @@ def render_process_flow():
     elif current_step == 2:
         render_risk_prediction()
     elif current_step == 3:
-        render_ai_analysis()
+        render_ai_reminder()
     elif current_step == 4:
         render_nearby_hospitals()
     else:

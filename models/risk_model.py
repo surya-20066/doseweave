@@ -1,5 +1,5 @@
 """
-MediSafe AI - Risk Classifier Definitions
+DoseWeave - Risk Classifier Definitions
 Wraps model configurations for Logistic Regression, Random Forest, and XGBoost.
 """
 

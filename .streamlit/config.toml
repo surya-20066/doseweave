@@ -8,3 +8,7 @@ font = "sans serif"
 
 [client]
 showSidebarNavigation = false
+toolbarMode = "minimal"
+
+[ui]
+hideTopBar = true

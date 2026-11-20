@@ -1,12 +1,12 @@
 """
-MediSafe AI - Professional Top Navigation Bar
+DoseWeave - Professional Top Navigation Bar
 Replaces the left sidebar navigation with a clean, responsive, stateful, and executive top navbar.
 
 States:
 1. Visitor (Unauthenticated):
-   [ ✚ MEDISAFE AI ] --------- [ HOME ] [ LOGIN ] [ SIGN UP ]
+   [ ✚ DOSEWEAVE ] --------- [ HOME ] [ LOGIN ] [ SIGN UP ]
 2. Authenticated:
-   [ ✚ MEDISAFE AI ] --------- [ HOME ] [ PROCESS ] [ PROFILE ] [ LOGOUT ]
+   [ ✚ DOSEWEAVE ] --------- [ HOME ] [ PROCESS ] [ PROFILE ] [ LOGOUT ]
    + Active Clinical User Avatar & Session Pill
 """
 
@@ -18,7 +18,7 @@ def render_top_nav():
     current_page = st.session_state.get("current_page", "home")
 
     # Map current_page to active top navbar button
-    process_pages = {"process", "patient_info", "risk_prediction", "ai_analysis", "nearby_hospitals", "dashboard"}
+    process_pages = {"process", "patient_info", "risk_prediction", "ai_reminder", "ai_analysis", "nearby_hospitals", "dashboard"}
 
     if not user:
         # VISITOR TOP NAVBAR
@@ -104,23 +104,36 @@ def render_top_nav():
             """, unsafe_allow_html=True)
 
         with c_nav:
-            btn_col1, btn_col2, btn_col3, btn_col4 = st.columns([1, 1.1, 1, 0.9])
-            with btn_col1:
+            is_admin = (user.get("role") == "admin")
+            if is_admin:
+                btn_cols = st.columns([1, 1.1, 1, 1.05, 0.9])
+                b1, b2, b3, b_adm, b_out = btn_cols[0], btn_cols[1], btn_cols[2], btn_cols[3], btn_cols[4]
+            else:
+                btn_cols = st.columns([1, 1.1, 1, 0.9])
+                b1, b2, b3, b_out = btn_cols[0], btn_cols[1], btn_cols[2], btn_cols[3]
+
+            with b1:
                 is_home = (current_page == "home")
                 if st.button("HOME", key="topnav_home_auth", use_container_width=True, type="primary" if is_home else "secondary"):
                     st.session_state.current_page = "home"
                     st.rerun()
-            with btn_col2:
+            with b2:
                 is_process = (current_page in process_pages)
                 if st.button("PROCESS", key="topnav_process_auth", use_container_width=True, type="primary" if is_process else "secondary"):
                     st.session_state.current_page = "process"
                     st.rerun()
-            with btn_col3:
+            with b3:
                 is_profile = (current_page == "profile")
                 if st.button("PROFILE", key="topnav_profile_auth", use_container_width=True, type="primary" if is_profile else "secondary"):
                     st.session_state.current_page = "profile"
                     st.rerun()
-            with btn_col4:
+            if is_admin:
+                with b_adm:
+                    is_adm_page = (current_page == "admin")
+                    if st.button("ADMIN", key="topnav_admin_auth", use_container_width=True, type="primary" if is_adm_page else "secondary"):
+                        st.session_state.current_page = "admin"
+                        st.rerun()
+            with b_out:
                 if st.button("LOGOUT", key="topnav_logout_auth", use_container_width=True):
                     st.session_state.clear()
                     st.session_state.current_page = "home"

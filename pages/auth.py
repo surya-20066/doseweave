@@ -1,5 +1,5 @@
 """
-MediSafe AI - Authentication Interface (Login & Sign-Up)
+DoseWeave - Authentication Interface (Login & Sign-Up)
 Secure registration and authentication system with password hashing and session management.
 Shows ONLY ONE view at a time (Login OR Sign-Up), toggleable via modern segmented pill buttons.
 Redirects to PROCESS upon successful authentication.
@@ -21,7 +21,7 @@ def render_auth_page():
                     <div class="brand-logo-icon" style="background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%); color: white; width: 48px; height: 48px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.6rem; margin-bottom: 0.85rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.32);">
                         ✚
                     </div>
-                    <h2 style="font-size: 1.95rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -0.03em;">MediSafe AI Portal</h2>
+                    <h2 style="font-size: 1.95rem; font-weight: 800; color: #0F172A; margin: 0; letter-spacing: -0.03em;">DoseWeave Portal</h2>
                     <p style="color: #64748B; font-size: 0.88rem; margin-top: 0.35rem; margin-bottom: 0.75rem;">Secure Access to Medication Risk & Clinical Safety Intelligence</p>
                     <div style="display: inline-flex; align-items: center; gap: 6px; background: #EFF6FF; border: 1px solid #DBEAFE; color: #2563EB; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px;">
                         <span class="pulse-dot"></span> Clinical Decision Support
@@ -60,7 +60,7 @@ def render_auth_page():
                 """, unsafe_allow_html=True)
 
                 with st.form("login_form"):
-                    email = st.text_input("Email address", placeholder="name@example.com", value="demo@medisafe.ai")
+                    email = st.text_input("Email address", placeholder="name@example.com", value="demo@doseweave.ai")
                     password = st.text_input("Password", type="password", placeholder="Enter your password", value="password123")
                     st.markdown("<div style='margin-top: 0.5rem;'></div>", unsafe_allow_html=True)
                     submit_login = st.form_submit_button("LOG IN", use_container_width=True, type="primary")
@@ -82,13 +82,15 @@ def render_auth_page():
 
                 # Quick demo credentials
                 st.markdown("""
-                    <div style="background: linear-gradient(135deg, #F0F7FF 0%, #EEF2FF 100%); border: 1px solid #BFDBFE; border-radius: 12px; padding: 0.85rem 1rem; margin-top: 1.25rem; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #F0F7FF 0%, #EEF2FF 100%); border: 1px solid #BFDBFE; border-radius: 12px; padding: 0.85rem 1rem; margin-top: 1.25rem;">
                         <div style="font-size: 0.74rem; font-weight: 800; color: #2563EB; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span>🔑</span> Evaluator Quick Demo Access
+                            <span>🔑</span> Quick Demo Access Credentials
                         </div>
-                        <div style="font-size: 0.82rem; color: #334155;">
-                            Email: <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #1E40AF;">demo@medisafe.ai</code> &nbsp;&bull;&nbsp; 
-                            Password: <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #1E40AF;">password123</code>
+                        <div style="font-size: 0.82rem; color: #334155; margin-bottom: 0.35rem; text-align: center;">
+                            <strong>Patient Portal:</strong> <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #1E40AF;">demo@doseweave.ai</code> / <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #1E40AF;">password123</code>
+                        </div>
+                        <div style="font-size: 0.82rem; color: #334155; text-align: center;">
+                            <strong>Admin Portal:</strong> <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #047857;">admin@doseweave.ai</code> / <code style="background: #FFFFFF; border: 1px solid #CBD5E1; padding: 2px 7px; border-radius: 6px; font-weight: 700; color: #047857;">admin123</code>
                         </div>
                     </div>
                 """, unsafe_allow_html=True)

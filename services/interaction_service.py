@@ -1,5 +1,5 @@
 """
-MediSafe AI - Interaction Intelligence Service
+DoseWeave - Interaction Intelligence Service
 Analyzes drug-drug, drug-food, drug-alcohol, and condition contraindications
 against verified pharmacological safety databases.
 """
@@ -45,10 +45,10 @@ class InteractionService:
 
     def analyze_all(
         self,
-        medications: List[Dict[str, Any]],
-        foods: List[Dict[str, Any]],
-        conditions: List[str],
-        allergies: List[Dict[str, Any]]
+        medications: List[Dict[str, Any]] = None,
+        foods: List[Dict[str, Any]] = None,
+        conditions: List[str] = None,
+        allergies: List[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
         Runs comprehensive clinical analysis:
@@ -58,6 +58,11 @@ class InteractionService:
         4. Allergy Cross-Reactions
         5. Duplicate Active Ingredient Check
         """
+        medications = [m for m in (medications or []) if m]
+        foods = [f for f in (foods or []) if f]
+        conditions = [c for c in (conditions or []) if c]
+        allergies = [a for a in (allergies or []) if a]
+
         drug_drug = self.check_drug_drug(medications)
         drug_food = self.check_drug_food(medications, foods)
         contraindications = self.check_disease_contraindications(medications, conditions)

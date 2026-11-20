@@ -1,5 +1,5 @@
 """
-MediSafe AI - Professional Healthcare User Profile Page
+DoseWeave - Professional Healthcare User Profile Page
 Displays authenticated user account details, linked clinical patient record,
 medical summary, profile completion status, real recent activity, and quick workflow actions.
 """
@@ -78,7 +78,7 @@ def render_user_profile():
 """)
 
         user_name = fresh_user.get("full_name", "Clinical User")
-        user_email = fresh_user.get("email", "user@medisafe.ai")
+        user_email = fresh_user.get("email", "user@doseweave.ai")
         user_initial = user_name[0].upper() if user_name else "U"
         member_since = format_member_date(fresh_user.get("created_at"))
         display_user_id = fresh_user.get("user_id", user_id or 1)
@@ -208,10 +208,10 @@ def render_user_profile():
 """)
 
         patient_exists = patient is not None
-        meds = get_patient_medications(patient["id"]) if patient_exists else []
-        conds = get_patient_conditions(patient["id"]) if patient_exists else []
-        allergies = get_patient_allergies(patient["id"]) if patient_exists else []
-        assessments = get_patient_assessments(patient["id"]) if patient_exists else []
+        meds = (get_patient_medications(patient["id"]) if patient_exists else []) or []
+        conds = (get_patient_conditions(patient["id"]) if patient_exists else []) or []
+        allergies = (get_patient_allergies(patient["id"]) if patient_exists else []) or []
+        assessments = (get_patient_assessments(patient["id"]) if patient_exists else []) or []
 
         med_info_complete = bool(meds or conds or allergies)
         risk_available = len(assessments) > 0
@@ -435,38 +435,30 @@ def render_user_profile():
             st.rerun()
 
     # -------------------------------------------------------------------------
-    # 4. OPTIONAL FACULTY / EVALUATOR DATABASE INSPECTOR (Clean & Collapsed)
+    # 4. PATIENT ROUTINE & SCHEDULING PREFERENCES
     # -------------------------------------------------------------------------
     st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
-    with st.expander("🗄️ Faculty & Evaluator Database Inspector (Optional)", expanded=False):
-        st.caption("Inspect live SQLite database tables (`data/medisafe.db`) for evaluation verification.")
-        import sqlite3
+    with st.expander("⏰ Daily Routine & Medication Timing Anchors", expanded=False):
+        st.caption("These lifestyle anchors determine the automatic calculation of morning, afternoon, and evening medication dose times.")
+        if patient:
+            p_r1, p_r2, p_r3 = st.columns(3)
+            with p_r1:
+                st.markdown(f"**Wake-up Time:** `{patient.get('wakeup_time') or '07:00'}`")
+                st.markdown(f"**Bedtime:** `{patient.get('bedtime') or '22:00'}`")
+            with p_r2:
+                st.markdown(f"**Breakfast Time:** `{patient.get('breakfast_time') or '08:00'}`")
+                st.markdown(f"**Lunch Time:** `{patient.get('lunch_time') or '13:00'}`")
+            with p_r3:
+                st.markdown(f"**Dinner Time:** `{patient.get('dinner_time') or '20:00'}`")
+                st.markdown(f"**Time Zone:** `{patient.get('timezone') or 'UTC'}`")
+        else:
+            st.info("No patient profile created yet. Complete Step 1 to set your routine.")
 
-        AVAILABLE_TABLES = [
-            ("👤 Users", "users"),
-            ("📋 Patients", "patients"),
-            ("💊 Medications", "medications"),
-            ("🩺 Medical Conditions", "medical_conditions"),
-            ("⚠️ Allergies", "allergies"),
-            ("⚡ Risk Assessments", "risk_assessments"),
-            ("💡 Recommendations", "recommendations")
-        ]
-
-        table_dict = {lbl: tbl for lbl, tbl in AVAILABLE_TABLES}
-        sel_lbl = st.selectbox("Select Table:", options=[lbl for lbl, _ in AVAILABLE_TABLES], key="prof_db_inspect")
-        sel_tbl = table_dict[sel_lbl]
-
-        try:
-            conn = sqlite3.connect(DB_PATH)
-            df = pd.read_sql_query(f"SELECT * FROM {sel_tbl} ORDER BY 1 DESC LIMIT 50", conn)
-            conn.close()
-
-            if "password_hash" in df.columns:
-                df["password_hash"] = df["password_hash"].apply(lambda h: f"{h[:8]}... (Hashed)" if h else "")
-
-            st.dataframe(df, use_container_width=True, hide_index=True)
-            st.caption(f"Showing up to 50 records from table `{sel_tbl}`")
-        except Exception as err:
-            st.error(f"Unable to read table: {err}")
+    # Protected link to Admin Dashboard if user has administrative rights
+    if user and user.get("role") == "admin":
+        st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
+        if st.button("🛡️ Open System Administration Dashboard", key="btn_prof_to_admin", type="primary", use_container_width=True):
+            st.session_state.current_page = "admin"
+            st.rerun()
 
 

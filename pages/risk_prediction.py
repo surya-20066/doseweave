@@ -1,5 +1,5 @@
 """
-MediSafe AI - Machine Learning Risk Prediction Page (Step 2 of 4)
+DoseWeave - Machine Learning Risk Prediction Page (Step 2 of 4)
 Automatically loads saved patient data from SQLite and performs real-time
 clinical risk analysis using the trained machine learning pipeline.
 Features compact data summary cards, centered trigger button, verified ML results,
@@ -9,7 +9,8 @@ dynamic Explainable AI factor attribution, and collapsed detail accordions.
 import streamlit as st
 from database.database import (
     get_patient_by_user, get_patient_medications, get_patient_foods,
-    get_patient_symptoms, save_risk_assessment
+    get_patient_symptoms, save_risk_assessment, get_patient_bundle,
+    get_assessment_history
 )
 from services.interaction_service import interaction_service
 from services.recommendation_service import recommendation_service
@@ -21,13 +22,27 @@ from components.emergency_alert import render_emergency_alert
 
 def render_risk_prediction():
     user_id = st.session_state.get("user_id", 1)
-    patient = get_patient_by_user(user_id)
+    
+    # Fast reliable bundle retrieval ensuring all lists are non-None
+    bundle = st.session_state.get("patient_bundle")
+    if (
+        not bundle 
+        or not bundle.get("patient") 
+        or bundle.get("patient", {}).get("user_id") != user_id
+        or st.session_state.get("patient_dirty", False)
+    ):
+        bundle = get_patient_bundle(user_id)
+        st.session_state.patient_bundle = bundle
+        st.session_state.patient_dirty = False
+
+    patient = bundle.get("patient")
+    st.session_state.current_patient = patient
 
     # 1. Page Header & Workflow Status
     render_header(
         title="ANALYSE THE RISK",
         subtitle="Step 2 of 4: Use the trained machine learning model to analyse medication-related risk",
-        breadcrumb="MediSafe AI > Process",
+        breadcrumb="DoseWeave > Process",
         active_step=2
     )
 
@@ -40,9 +55,9 @@ def render_risk_prediction():
         return
 
     patient_id = patient["id"]
-    medications = get_patient_medications(patient_id, active_only=True)
-    foods = get_patient_foods(patient_id)
-    symptoms = get_patient_symptoms(patient_id)
+    medications = [m for m in (bundle.get("medications") or []) if m]
+    foods = [f for f in (bundle.get("foods") or []) if f]
+    symptoms = [s for s in (bundle.get("symptoms") or []) if s]
 
     # 2. Compact Automatically Retrieved Patient Data Summary
     st.markdown("### 📋 Automatically Retrieved Patient Data")
@@ -129,14 +144,14 @@ def render_risk_prediction():
         with btn_c1:
             run_pred_btn = st.button("⚡ ANALYSE MY RISK", key="run_ml_btn", type="primary", use_container_width=True)
         with btn_c2:
-            if st.button("RECOMMENDATIONS →", key="skip_to_recs_btn", type="secondary", use_container_width=True):
+            if st.button("AI REMINDERS →", key="skip_to_recs_btn", type="secondary", use_container_width=True):
                 st.session_state.process_step = 3
                 st.session_state.current_page = "process"
                 st.rerun()
 
         st.markdown(
             "<div style='text-align: center; font-size: 0.82rem; color: #64748B; margin-top: 0.45rem; line-height: 1.35;'>"
-            "Analyse with the trained machine learning model, or proceed directly to AI Recommendations."
+            "Analyse with the trained machine learning model, or proceed directly to AI Reminder System."
             "</div>",
             unsafe_allow_html=True
         )
@@ -187,6 +202,9 @@ def render_risk_prediction():
                 interactions=all_alerts,
                 recommendations=recs
             )
+            st.session_state.assessment_dirty = True
+            if "patient_bundle" in st.session_state and st.session_state["patient_bundle"]:
+                st.session_state["patient_bundle"]["history"] = get_assessment_history(patient_id) or []
 
     # If the user has not analyzed yet in this session, provide a helpful prompt and direct link to Step 3
     if not st.session_state.get("risk_analyzed", False) or "last_prediction" not in st.session_state:
@@ -203,7 +221,7 @@ def render_risk_prediction():
         st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
         c_nav1, c_nav2, c_nav3 = st.columns([1, 1.8, 1])
         with c_nav2:
-            if st.button("CONTINUE TO RECOMMENDATIONS →", key="unassessed_continue_btn", type="primary", use_container_width=True):
+            if st.button("CONTINUE TO AI REMINDER SYSTEM →", key="unassessed_continue_btn", type="primary", use_container_width=True):
                 st.session_state.process_step = 3
                 st.session_state.current_page = "process"
                 st.rerun()
@@ -435,7 +453,7 @@ def render_risk_prediction():
     st.markdown("<div style='margin-top: 2.25rem;'></div>", unsafe_allow_html=True)
     c_col1, c_col2, c_col3 = st.columns([1, 1.8, 1])
     with c_col2:
-        if st.button("CONTINUE TO RECOMMENDATIONS →", key="pred_to_ai_btn", type="primary", use_container_width=True):
+        if st.button("CONTINUE TO AI REMINDER SYSTEM →", key="pred_to_ai_btn", type="primary", use_container_width=True):
             st.session_state.process_step = 3
             st.session_state.current_page = "process"
             st.rerun()

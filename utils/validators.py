@@ -1,5 +1,5 @@
 """
-MediSafe AI - Input Validators and Sanitizers
+DoseWeave - Input Validators and Sanitizers
 Provides strict data validation for patient demographics, medication entries,
 dosages, and dietary inputs.
 """
